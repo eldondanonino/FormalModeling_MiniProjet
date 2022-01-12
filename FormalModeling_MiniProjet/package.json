@@ -1,7 +1,7 @@
 {
   "name": "FormalModeling_MiniProjet",
   "version": "1.0.0",
-  "description": "A JavaScript project",
+  "description": "Formal modeling project Efrei",
   "main": "./dist/index.js",
   "scripts": {
     "start": "node ./node_modules/parcel-bundler/bin/cli serve ./src/index.html --port 8080",

@@ -15,3 +15,18 @@ Efrei
 * PHI → PHI
 * PSI → PSI
 * IS TRUE → IST 
+
+### Glossary
+
+* A → All
+* E → Exists
+* X → Next
+* G → Globally
+* F → Finally
+* x U y → x Until y
+
+
+### Input format 
+
+* Kripke as a 4 tuple (S,I,R,L)
+* CTL following the interpretation in one line

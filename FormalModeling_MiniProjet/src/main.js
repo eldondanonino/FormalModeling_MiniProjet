@@ -1,5 +1,3 @@
-'use strict';
-
 function counter() {
   let seconds = 0;
   setInterval(() => {

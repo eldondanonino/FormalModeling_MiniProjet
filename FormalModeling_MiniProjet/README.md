@@ -45,7 +45,7 @@ List of states **S**:
 
 `{S1, S2, S3}`
 
-Label of each sate **L**:
+Label of each state **L**:
 
 `{(S1, {p, q}), (S2, {q}), (S3, {p})}`
 

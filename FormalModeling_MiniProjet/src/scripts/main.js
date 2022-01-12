@@ -1,4 +1,3 @@
-import { counter as cnt} from "./counter";
+import { parse as parser } from "./parser";
 
-
-cnt();
+parser ();

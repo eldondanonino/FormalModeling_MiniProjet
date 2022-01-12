@@ -1,3 +1,3 @@
-import { parse as parser } from "./parser";
+import { parse } from "./parser";
 
-parser ();
+parse();

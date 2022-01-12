@@ -17,6 +17,7 @@ Create classes
 // put each line in table
 // parse
 // profit
+import * as fs from "fs";
 
 const filePath = "../../documents/test_files/test1.txt";
 
@@ -34,21 +35,20 @@ function readTextFile(myFile) {
 }
 
 // Display elements
-function output() {
-  
-}
+function output() {}
 
 function parse() {
   // Read document
   var fs = require("fs");
-  fs.readFile(filePath, function(text){
-      var textByLine = text.split("\n")
-  });
+  var text = fs.readFileSync("documents/test_files/test1.txt",'utf-8');
 
+  var textByLine = text.split("\n");
   // Put content in table
 
   // Display
+  console.log("aaaaaa");
   document.getElementById("app").innerHTML = "put";
 }
 
-parse();
+//parse();
+module.exports = parse();

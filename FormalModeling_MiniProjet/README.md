@@ -33,7 +33,7 @@ Efrei
   1. 'S' is a finite set of states ;
   2. 'L' is a labeling (or interpretation) function ;
   3. 'T' is a transition relation ;
-  4. 'I' is the initial state ;# list the states
+  4. 'I' is the initial state ; # list the states
 
 - CTL following the interpretation in one line
 

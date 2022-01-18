@@ -20,33 +20,24 @@ Create classes
 import * as fs from "fs";
 
 const filePath = "documents/test_files/";
-const fileName = "test1";
+const fileName = "test2";
 const finalPath = "".concat(filePath, fileName, ".txt");
 
 // Display elements
 export function output(data) {
   // console.log(data);
   document.getElementById("app").innerHTML =
-    "<h1> " +
-    data[0] +
-    "</h1><br/>" +
-    "<h1> " +
-    data[1] +
-    "</h1><br/>" +
-    "<h1> " +
-    data[2] +
-    "</h1><br/>" +
-    "<h1> " +
-    data[3] +
-    "</h1><br/>" +
-    "<h1> " +
-    data[4] +
-    "</h1><br/>";
+    "<h2> " +    data.states +    "</h2>" +
+    "<h2> " +    data.tuples +    "</h2>" +
+    "<h2> " +    data.transitions +    "</h2>" +
+    "<h2> " +    data.initial +    "</h2>" +
+    "<h2> " +    data.ctl +    "</h2>";
 }
 
 export function process(input) {
   let states = input[0].replace(/{|}/g, "").split(",");
-  console.log("States: " + states);
+  console.log("States: ");
+  console.log(states);
 
   let tuples = input[1].replace(/\)|{|}/g, "").split("(");
   tuples.filter(function (e) {
@@ -78,6 +69,15 @@ export function process(input) {
   let ctl = input[4];
   console.log("ctl: ");
   console.log(ctl);
+  return(
+    {
+      states: states,
+      tuples: tuples,
+      transitions : transitions,
+      initial : initial_state,
+      ctl : ctl
+    }
+  )
 }
 
 //parse();

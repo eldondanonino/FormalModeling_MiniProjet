@@ -19,36 +19,30 @@ Create classes
 // profit
 import * as fs from "fs";
 
-const filePath = "../../documents/test_files/test1.txt";
-
-function readTextFile(myFile) {
-  var rawFile = new XMLHttpRequest();
-
-  rawFile.open("GET", myFile, true);
-  rawFile.onreadystatechange = function () {
-    if (rawFile.readyState === 4) {
-      var allText = rawFile.responseText;
-      document.getElementById("textSection").innerHTML = allText;
-    }
-  };
-  rawFile.send();
-}
+const filePath = "documents/test_files/";
+const fileName = "test1";
+const finalPath = "".concat(filePath, fileName, ".txt");
 
 // Display elements
-function output() {}
+export function output(textByLine) {
+  console.log(textByLine);
 
-function parse() {
-  // Read document
-  var fs = require("fs");
-  var text = fs.readFileSync("documents/test_files/test1.txt",'utf-8');
-
-  var textByLine = text.split("\n");
-  // Put content in table
-
-  // Display
-  console.log("aaaaaa");
-  document.getElementById("app").innerHTML = "put";
+  textByLine.forEach(function callback(value, index, object) {
+    if (value.match(/^KRP|^S:|^L:|^T:|^I:|^CTL/)) {
+      object.splice(index, 1); //removes indicators
+    }
+  });
+  console.log(textByLine);
+  document.getElementById("app").innerHTML = "<h1> " + textByLine + "</h1>";
 }
 
 //parse();
-module.exports = parse();
+export function parse() {
+  // Read document
+  let fs = require("fs");
+  let text = fs.readFileSync(finalPath, "utf-8");
+  // Put content in table
+  let textByLine = text.split("\r\n");
+
+  return textByLine;
+}

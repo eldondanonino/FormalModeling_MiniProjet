@@ -3,14 +3,23 @@ import { output, parse, process } from "./parser";
 const testFiles_folderPath = "./documents/test_files/";
 
 export function updateFileSelect() {
-    console.log("updateFileSelect reached");
+  console.log("updateFileSelect reached");
   let selectFile = document.getElementById("selectFile");
 
   selectFile.onchange = function () {
-    document.getElementById("selectOutput").innerHTML = Date.now();
+    let prompt = "";
 
-    // Launch the app
-    output(/* TODO: parse selected file */);
+    if (selectFile.value == "") {
+      prompt = "Please select a file";
+    } else {
+      prompt = "You have selected " + selectFile.value;
+    }
+
+    document.getElementById("selectOutput").innerHTML = "<p>" + prompt + "</p>";
+
+    /// Launch the app
+    // TODO: check the file is not null
+    output(testFiles_folderPath + selectFile.value + ".txt");
   };
 }
 
@@ -19,14 +28,18 @@ export function getFilesPath(filePath) {
   filePath = testFiles_folderPath;
 
   /// Get existing files in directory
-  let files = getFilesInDirectory(filePath);
+  //let files = getFilesInDirectory(filePath);
 
   /// Insert  selection in HTML
+  // Done by 'updateFileSelect()'
 }
 
 export function getFilesInDirectory(path) {
-  // let fs = require("fs");
-  // let files = fs.readdirSync("documents/test_files/");
+  // Could not implement dynamic names
+  //cf: 'fs.readdirSync()'
+  
+  /* let fs = require("fs");
+  let files = fs.readdirSync("documents/test_files/");
 
-  // console.log(files);
+  console.log(files); */
 }

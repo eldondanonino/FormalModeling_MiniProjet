@@ -5,6 +5,7 @@ import { process } from "./process";
 let data = process(parse());
 let tuples = data.tuples;
 let states = data.states;
+let transitions = data.transitions;
 
 export function marking(atomicProp) {
     let table = [];
@@ -16,8 +17,8 @@ export function marking(atomicProp) {
     return table;
 }
 
-export function not(atomicProp) {
-    let table = marking(atomicProp);
+export function not(sub_func) {
+    let table = marking(sub_func);
     let table_not = [];
     for (var i = 0; i < table.length; i++){
         table[i] == true ? table_not.push(false) : table_not.push(true);
@@ -26,9 +27,9 @@ export function not(atomicProp) {
     return table_not;
 }
 
-export function and(atomicProp1, atomicProp2){
-    let table1 = marking(atomicProp1);
-    let table2 = marking(atomicProp2);
+export function and(sub_func1, sub_func2){
+    let table1 = marking(sub_func1);
+    let table2 = marking(sub_func2);
     let table_and = [];
 
     for (var i = 0; i < table1.length; i++){
@@ -38,6 +39,30 @@ export function and(atomicProp1, atomicProp2){
     return table_and;
 }
 
-export function exists_X(atomicProp){
-    
+export function EX(sub_func){
+    let table = marking(sub_func);
+    let table_EX = [];
+
+    for (var i = 0; i < table.length; i++){
+        table_EX[i] = false;
+    }
+
+    for(var i = 0; i < states.length; i++){
+        for(var pos_trans = 0; pos_trans < transitions.length; pos_trans++){
+            if(transitions[pos_trans][0] == states[i]){
+                let state_prime = transitions[pos_trans][1];
+                let pos_state_prime = 0;
+                for(var x = 0; x < states.length; x++){
+                    if(states[x] == state_prime){
+                        pos_state_prime = x;
+                    }
+                }
+                if(table[pos_state_prime] == true){
+                    table_EX[i] = true;
+                }
+            }
+        }
+    }
+
+    return table_EX;
 }

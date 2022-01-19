@@ -4,4 +4,4 @@ import { updateFileSelect, getFilesInDirectory } from "./getFiles";
 updateFileSelect();
 getFilesInDirectory();
 
-output(process(parse()));
+output();

@@ -1,3 +1,7 @@
-import { output, parse, process } from "./parser";
+import { output } from "./parser";
+import { updateFileSelect, getFilesInDirectory } from "./getFiles";
 
-output(process(parse()));
+updateFileSelect();
+getFilesInDirectory();
+
+// output();

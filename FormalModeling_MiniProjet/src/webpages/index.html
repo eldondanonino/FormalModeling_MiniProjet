@@ -1,13 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Formal Modeling Project</title>
-  <link rel="stylesheet" href="../styles/style.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-  <h1>The project will be here soon (tm)</h1>
-  <div id="app"></div>
-  <script src="../scripts/main.js"></script>
-</body>
+  <head>
+    <title>Formal Modeling Project</title>
+    <link rel="stylesheet" href="../styles/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <h1>The project will be here soon (tm)</h1>
+
+    <!--- File Selection -->
+
+    <h2>Select a file:</h2>
+    <select name="selectFile" id="selectFile">
+      <option value="">--Select a file</option>
+      <option value="test1">test1</option>
+      <option value="test2">test2</option>
+      <div id="otherFiles"></div>
+    </select>
+
+    <div id="selectOutput"></div>
+
+    <!--- End:File Selection -->
+
+    <!--- Application -->
+
+    <div id="app"></div>
+    <script src="../scripts/main.js"></script>
+
+    <!--- End:Application -->
+  </body>
 </html>

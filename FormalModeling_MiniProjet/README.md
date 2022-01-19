@@ -19,7 +19,7 @@ Efrei
 
 ### Glossary
 
-- A → All
+- A → FORAll
 - E → Exists
 - X → Next
 - G → Globally

@@ -17,14 +17,6 @@ export function output() {
   "<h2> " +    data.ctl +    "</h2>";
 }
 
-export function process(input) {
-  console.log('starting processing')
-  
-  let states = input[0].replace(/{|}/g, "").split(",");
-  console.log("States: ");
-  console.log(states);
-}
-
 export function parse() {
   // Read document
   console.log('starting parsing')

@@ -19,12 +19,12 @@ Efrei
 
 ### Glossary
 
-- A → FORAll
-- E → Exists
-- X → Next
-- G → Globally
-- F → Finally
-- x U y → x Until y
+- For All   → A 
+- Exists    → E
+- Next      → X
+- Globally  → G 
+- Finally   → F
+- x Until y → x U y
 
 ### Input format
 

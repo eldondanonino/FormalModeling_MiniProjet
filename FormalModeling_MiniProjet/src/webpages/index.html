@@ -8,6 +8,8 @@
   <body>
     <h1>The project will be here soon (tm)</h1>
 
+    <!--- File Selection -->
+
     <h2>Select a file:</h2>
     <select name="selectFile" id="selectFile">
       <option value="">--Select a file</option>
@@ -15,9 +17,20 @@
       <option value="file_path_2">Second</option>
       <div id="otherFiles"></div>
     </select>
+    
+    <script>
+      document.getElementById("selectOutput").innerHTML = Date.now();
+    </script>
+
     <div id="selectOutput"></div>
+
+    <!--- End:File Selection -->
+
+    <!--- Application -->
 
     <div id="app"></div>
     <script src="../scripts/main.js"></script>
+
+    <!--- End:Application -->
   </body>
 </html>

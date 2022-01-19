@@ -3,12 +3,14 @@ import { output, parse, process } from "./parser";
 const testFiles_folderPath = "./documents/test_files/";
 
 export function updateFileSelect() {
+    console.log("updateFileSelect reached");
   let selectFile = document.getElementById("selectFile");
 
   selectFile.onchange = function () {
     document.getElementById("selectOutput").innerHTML = Date.now();
 
-    output(process(parse()));
+    // Launch the app
+    output(/* TODO: parse selected file */);
   };
 }
 

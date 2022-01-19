@@ -23,7 +23,7 @@ export function process(input) {
   let states = input[0].replace(/{|}/g, "").split(",");
   console.log("States: ");
   console.log(states);
-
+}
 
 export function parse() {
   // Read document
@@ -39,3 +39,4 @@ export function parse() {
   });
   return textByLine;
 }
+

@@ -17,6 +17,7 @@ export function output(data) {
 
 export function process(input) {
   console.log('starting processing')
+  
   let states = input[0].replace(/{|}/g, "").split(",");
   console.log("States: ");
   console.log(states);

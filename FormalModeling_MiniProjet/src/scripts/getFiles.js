@@ -25,8 +25,8 @@ export function getFilesPath(filePath) {
 }
 
 export function getFilesInDirectory(path) {
-  let fs = require("fs");
-  let files = fs.readdirSync("documents/test_files/");
+  // let fs = require("fs");
+  // let files = fs.readdirSync("documents/test_files/");
 
-  console.log(files);
+  // console.log(files);
 }

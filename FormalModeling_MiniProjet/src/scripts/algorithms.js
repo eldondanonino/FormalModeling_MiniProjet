@@ -20,49 +20,92 @@ export function marking(atomicProp) {
 export function not(sub_func) {
     let table = marking(sub_func);
     let table_not = [];
-    for (var i = 0; i < table.length; i++){
+    for (var i = 0; i < table.length; i++) {
         table[i] == true ? table_not.push(false) : table_not.push(true);
     }
 
     return table_not;
 }
 
-export function and(sub_func1, sub_func2){
+export function and(sub_func1, sub_func2) {
     let table1 = marking(sub_func1);
     let table2 = marking(sub_func2);
     let table_and = [];
 
-    for (var i = 0; i < table1.length; i++){
+    for (var i = 0; i < table1.length; i++) {
         table1[i] == true && table2[i] == true ? table_and.push(true) : table_and.push(false);
     }
 
     return table_and;
 }
 
-export function EX(sub_func){
+export function EX(sub_func) {
     let table = marking(sub_func);
     let table_EX = [];
 
-    for (var i = 0; i < table.length; i++){
+    for(var i = 0; i < table.length; i++) {
         table_EX[i] = false;
     }
 
-    for(var i = 0; i < states.length; i++){
-        for(var pos_trans = 0; pos_trans < transitions.length; pos_trans++){
-            if(transitions[pos_trans][0] == states[i]){
+    for (var i = 0; i < states.length; i++) {
+        for (var pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
+            if (transitions[pos_trans][0] == states[i]) {
                 let state_prime = transitions[pos_trans][1];
                 let pos_state_prime = 0;
-                for(var x = 0; x < states.length; x++){
-                    if(states[x] == state_prime){
+                for (var x = 0; x < states.length; x++) {
+                    if (states[x] == state_prime) {
                         pos_state_prime = x;
                     }
                 }
-                if(table[pos_state_prime] == true){
+                if (table[pos_state_prime] == true){
                     table_EX[i] = true;
                 }
+
             }
         }
     }
 
     return table_EX;
+}
+
+export function E_Until(sub_func1, sub_func2) {
+    let table1 = marking(sub_func1);
+    let table2 = marking(sub_func2);
+    let table_EU = [];  
+    let table_seen = [];
+    let L = [];
+
+    for(var i = 0; i < states.length; i++) {
+        table_seen[i] = false;
+        table_EU[i] = false;
+    }
+
+    for (var i = 0; i < states.length; i++) {
+        if(table2[i] == true){
+            L.push(i);
+        }
+    }
+
+    while(L.lenght =! 0){
+        let last = L.pop();
+        table_EU[last] = true;
+        for (var pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
+            if(transitions[pos_trans][1] == states[last]){
+                let origin = transitions[pos_trans][0]; 
+                let pos_state_origin = 0;
+                for (var x = 0; x < states.length; x++) {
+                    if (states[x] == origin) {
+                        pos_state_origin = x;
+                    }
+                }
+                if(table_seen[pos_state_origin] == false){
+                    table_seen[last] = true;
+                    if(table1[last] == true){
+
+                    }
+                }
+            }
+        }
+    }
+    return table_EU;
 }

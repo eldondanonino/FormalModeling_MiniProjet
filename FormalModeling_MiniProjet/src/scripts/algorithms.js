@@ -92,16 +92,16 @@ export function E_Until(sub_func1, sub_func2) {
         for (var pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
             if(transitions[pos_trans][1] == states[last]){
                 let origin = transitions[pos_trans][0]; 
-                let pos_state_origin = 0;
+                let pos_origin = 0;
                 for (var x = 0; x < states.length; x++) {
                     if (states[x] == origin) {
-                        pos_state_origin = x;
+                        pos_origin = x;
                     }
                 }
-                if(table_seen[pos_state_origin] == false){
-                    table_seen[last] = true;
-                    if(table1[last] == true){
-
+                if(table_seen[pos_origin] == false){
+                    table_seen[pos_origin] = true;
+                    if(table1[pos_origin] == true){
+                        L.push(pos_origin)
                     }
                 }
             }

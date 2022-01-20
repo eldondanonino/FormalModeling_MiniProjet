@@ -1,5 +1,6 @@
 import * as fs from "fs";
 import { process } from "./process";
+import { display } from "./output";
 
 const filePath = "documents/test_files/";
 // const fileName = "test2";
@@ -9,22 +10,7 @@ export function output(fileName) {
   let data = process(parse(fileName));
 
   console.log("starting output");
-  document.getElementById("app").innerHTML =
-    "<h2> " +
-    data.states +
-    "</h2>" +
-    "<h2> " +
-    data.tuples +
-    "</h2>" +
-    "<h2> " +
-    data.transitions +
-    "</h2>" +
-    "<h2> " +
-    data.initial +
-    "</h2>" +
-    "<h2> " +
-    data.ctl +
-    "</h2>";
+  display(data); 
 }
 
 export function parse(fileName) {

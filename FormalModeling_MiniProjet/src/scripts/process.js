@@ -27,6 +27,7 @@ export function process(input) {
     console.log(transitions);
   
     let initial_state = input[3].replace(/{|}/g, "");
+    Array.isArray(initial_state) ? true : initial_state = [initial_state];
   
     console.log("initial state: ");
     console.log(initial_state);

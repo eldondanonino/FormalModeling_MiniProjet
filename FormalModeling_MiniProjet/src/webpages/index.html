@@ -2,6 +2,11 @@
 <html lang="en">
   <head>
     <title>Formal Modeling Project</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      src = "./src/scripts/output.js";
+    </script>
+
     <link rel="stylesheet" href="../styles/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
@@ -11,16 +16,46 @@
     <!--- File Selection -->
 
     <h2>Select a file:</h2>
-    <select name="selectFile" id="selectFile">
-      <option value="">--Select a file</option>
-      <option value="test1">test1</option>
-      <option value="test2">test2</option>
-      <div id="otherFiles"></div>
-    </select>
+    <form>
+      <select name="selectFile" id="selectFile">
+        <option value="">--Select a file</option>
+        <option value="test1">test1</option>
+        <option value="test2">test2</option>
+        <div id="otherFiles"></div>
+      </select>
+
+      <button id="selectFile-validate" type="button">Launch</button>
+    </form>
 
     <div id="selectOutput"></div>
 
     <!--- End:File Selection -->
+
+    <!-- Display Input Table -->
+
+    <div id="tables">
+      <table id="states">
+        <title id="state-title">State</title>
+        <tbody></tbody>
+      </table>
+      <br />
+      <table id="tuples">
+        <title id="tuple-title">Tuples</title>
+        <tbody></tbody>
+      </table>
+      <br />
+      <table id="transitions">
+        <title id="transition-title">Transitions</title>
+        <tbody></tbody>
+      </table>
+      <br />
+      <table id="initial-states">
+        <title id="initial-state-title">Initial State</title>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- End:Display Input Table -->
 
     <!--- Application -->
 

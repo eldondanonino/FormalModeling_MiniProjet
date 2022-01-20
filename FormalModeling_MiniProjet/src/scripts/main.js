@@ -1,10 +1,17 @@
 import { output, parse, process } from "./parser";
-import {and, EX, marking, not} from "./algorithms"
+import {and, EX, marking, not, E_Until} from "./algorithms"
 
 output();
 
-console.log("Marking of p:\n" + marking("p"));
-console.log("Marking of q:\n" + marking("q"));
-console.log("Not p:\n" + not("p"));
-console.log("p and q:\n" + and("p", "q"));
-console.log("EX of p:\n" + EX("p"));
+console.log("Marking of p:\n");
+console.log(marking("p"));
+console.log("Marking of q:\n");
+console.log(marking("q"));
+console.log("Not p:\n");
+console.log(not("p"));
+console.log("p and q:\n");
+console.log(and("p", "q"));
+console.log("EX of p:\n");
+console.log(EX("p"));
+console.log("E(q U p*:\n");
+console.log(E_Until("q", "p"));

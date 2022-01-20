@@ -68,33 +68,35 @@ export function EX(sub_func) {
     return table_EX;
 }
 
-export function E_Until(sub_func1, sub_func2) {
+export function EU(sub_func1, sub_func2) {
     let table1 = marking(sub_func1);
     let table2 = marking(sub_func2);
     let table_EU = [];  
     let table_seen = [];
     let L = [];
+    let pos_origin = 0;
 
     for(var i = 0; i < states.length; i++) {
         table_seen[i] = false;
         table_EU[i] = false;
     }
 
-    for (var i = 0; i < states.length; i++) {
+    //checks for any state that verifies sub_func2 and saves it in L
+    for (var i = 0; i < states.length; i++) {  
         if(table2[i] == true){
             L.push(i);
         }
     }
 
-    while(L.lenght =! 0){
+    while(L.length =! 0){
         let last = L.pop();
         table_EU[last] = true;
         for (var pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
             if(transitions[pos_trans][1] == states[last]){
                 let origin = transitions[pos_trans][0]; 
-                let pos_origin = 0;
+                pos_origin = 0;
                 for (var x = 0; x < states.length; x++) {
-                    if (states[x] == origin) {
+                    if (states[x] == origin) {           //use strict equality ?
                         pos_origin = x;
                     }
                 }
@@ -108,4 +110,10 @@ export function E_Until(sub_func1, sub_func2) {
         }
     }
     return table_EU;
+}
+
+export function A_Until(sub_func1, sub_func2){
+    let table1 = marking(sub_func1);
+    let table2 = marking(sub_func2);
+    let L = [];
 }

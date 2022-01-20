@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import { process } from "./process";
 
 const filePath = "documents/test_files/";
@@ -8,7 +7,6 @@ const finalPath = "".concat(filePath, fileName, ".txt");
 // Display elements
 export function output() {
   let data = process(parse());
-  console.log('starting output')
   document.getElementById("app").innerHTML =
   "<h2> " +    data.states +    "</h2>" +
   "<h2> " +    data.tuples +    "</h2>" +
@@ -21,7 +19,6 @@ export function output() {
 
 export function parse() {
   // Read document
-  console.log('starting parsing')
   let fs = require("fs");
   let text = fs.readFileSync(finalPath, "utf-8");
   // Put content in table

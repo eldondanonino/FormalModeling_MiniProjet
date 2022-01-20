@@ -24,7 +24,7 @@
         <div id="otherFiles"></div>
       </select>
 
-      <button id="selectFile-validate" type="button">Launch</button>
+      <button id="selectFile-validate" type="button" autofocus>Launch</button>
     </form>
 
     <div id="selectOutput"></div>
@@ -35,22 +35,26 @@
 
     <div id="tables">
       <table id="states">
-        <title id="state-title">State</title>
+        <td id="state-title">State</td>
         <tbody></tbody>
       </table>
       <br />
       <table id="tuples">
-        <title id="tuple-title">Tuples</title>
+        <td id="tuple-title-1">Tuples</td>
+        <td id="tuple-title-2" colspan="100%">Atomic proposition</td>
         <tbody></tbody>
       </table>
       <br />
       <table id="transitions">
-        <title id="transition-title">Transitions</title>
+        <tr>
+          <td id="transition-title-1">Start state</td>
+          <td id="transition-title-2">End state</td>
+        </tr>
         <tbody></tbody>
       </table>
       <br />
       <table id="initial-states">
-        <title id="initial-state-title">Initial State</title>
+        <td id="initial-state-title">Initial State</td>
         <tbody></tbody>
       </table>
     </div>

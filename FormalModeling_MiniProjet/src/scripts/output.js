@@ -14,6 +14,10 @@ $(document).ready(function () {
     if (!flag) {
       // TODO: not have the select file hardcoded
       states = process(parse("./documents/test_files/test2.txt")).states;
+      tuples = process(parse("./documents/test_files/test2.txt")).tuples;
+      transitions = process(
+        parse("./documents/test_files/test2.txt")
+      ).transitions;
       initial = process(parse("./documents/test_files/test2.txt")).initial;
 
       displayStates();
@@ -35,11 +39,30 @@ function displayStates() {
 }
 
 function displayTuples() {
-  console.log("les tuples tas vu");
+  $("#tuple-title-1").show();
+  $("#tuple-title-2").show();
+  let tmp;
+
+  tuples.forEach(function (tuple) {
+    tmp = `<tr>`;
+    for (let i = 0; i < tuple.length; i++) {
+      tmp += `<td>${tuple[i]}</td>`;
+    }
+    tmp += `</tr>`;
+
+    $("#tuples").append(tmp);
+  });
 }
 
 function displayTransitions() {
-  console.log("les tugrhwtfxples tas vu");
+  $("#transition-title-1").show();
+  $("#transition-title-2").show();
+
+  transitions.forEach(function (value) {
+    $("#transitions").append(
+      `<tr><td>${value[0]}</td><td>${value[1]}</td></tr>`
+    );
+  });
 }
 
 function displayInitialStates() {

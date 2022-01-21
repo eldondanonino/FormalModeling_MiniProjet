@@ -5,6 +5,7 @@
 /* Light mode */
 @media (prefers-color-scheme: light) {
   body {
+    
       background-color: white;
       color: black;
   }
@@ -44,7 +45,7 @@ html,
 }
 
 body {
-  margin: 0;
+  margin: 15;
 }
 
 h1 {

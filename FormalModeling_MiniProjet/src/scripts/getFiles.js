@@ -4,7 +4,6 @@ const { readdirSync } = require("fs");
 const testFiles_folderPath = "./documents/test_files/";
 
 export function updateFileSelect() {
-  console.log("updateFileSelect reached");
   let selectFile = document.getElementById("selectFile");
 
   selectFile.onchange = function () {

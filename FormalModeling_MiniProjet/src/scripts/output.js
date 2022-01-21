@@ -10,7 +10,6 @@ let flag = false; // On file change: set to false
 let queue = [];
 
 $(document).ready(function () {
-  $("*[id*=-title]").hide();
 
   $("*[id*=cb-]").on("change", function () {
     flag = false;
@@ -40,8 +39,7 @@ $(document).ready(function () {
 });
 
 function displayStates() {
-  $("#state-title").show();
-
+  $("#states").removeAttr("hidden");
   states.forEach(function (value) {
     $("#states").append(`<tr><td class="node">${value}</td></tr>`);
   });
@@ -49,9 +47,7 @@ function displayStates() {
 }
 
 function displayTuples() {
-  $("#tuple-title-1").show();
-  $("#tuple-title-2").show();
-
+  $("#tuples").removeAttr("hidden");
   let tmp;
 
   tuples.forEach(function (tuple) {
@@ -67,9 +63,7 @@ function displayTuples() {
 }
 
 function displayTransitions() {
-  $("#transition-title-1").show();
-  $("#transition-title-2").show();
-
+  $("#transitions").removeAttr("hidden");
   transitions.forEach(function (value) {
     $("#transitions").append(
       `<tr><td class="node">${value[0]}</td><td class="node">${value[1]}</td></tr>`
@@ -79,8 +73,7 @@ function displayTransitions() {
 }
 
 function displayInitialStates() {
-  $("#initial-state-title").show();
-
+  $("#initial-states").removeAttr("hidden");
   initial.forEach(function (value) {
     $("#initial-states").append(`<tr><td class="node">${value}</td></tr>`);
   });
@@ -89,17 +82,15 @@ function displayInitialStates() {
 
 function hideUncheckedTitles() {
   if ($("#cb-states")[0].checked === false) {
-    $("#state-title").hide();
+    $("#states").attr("hidden", true);
   }
   if ($("#cb-tuples")[0].checked === false) {
-    $("#tuple-title-1").hide();
-    $("#tuple-title-2").hide();
+    $("#tuples").attr("hidden", true);
   }
   if ($("#cb-transitions")[0].checked === false) {
-    $("#transition-title-1").hide();
-    $("#transition-title-2").hide();
+    $("#transitions").attr("hidden", true);
   }
   if ($("#cb-initial-states")[0].checked == false) {
-    $("#initial-state-title").hide();
+    $("#initial-states").attr("hidden", true);
   }
 }

@@ -21,8 +21,7 @@ $(document).ready(function () {
       flag = true;
 
       hideUncheckedTitles();
-
-      $(".node").remove();
+      $('.node:not(".title")').remove();
 
       // TODO: not have the select file hardcoded
       states = process(parse("./documents/test_files/test2.txt")).states;
@@ -46,6 +45,7 @@ function displayStates() {
   states.forEach(function (value) {
     $("#states").append(`<tr><td class="node">${value}</td></tr>`);
   });
+  $("#states tr").addClass("node");
 }
 
 function displayTuples() {
@@ -62,6 +62,7 @@ function displayTuples() {
     tmp += `</tr>`;
 
     $("#tuples").append(tmp);
+    $("#tuples tr").addClass("node");
   });
 }
 
@@ -74,6 +75,7 @@ function displayTransitions() {
       `<tr><td class="node">${value[0]}</td><td class="node">${value[1]}</td></tr>`
     );
   });
+  $("#transitions tr").addClass("node");
 }
 
 function displayInitialStates() {
@@ -82,10 +84,10 @@ function displayInitialStates() {
   initial.forEach(function (value) {
     $("#initial-states").append(`<tr><td class="node">${value}</td></tr>`);
   });
+  $("#initial-states tr").addClass("node");
 }
 
 function hideUncheckedTitles() {
-
   if ($("#cb-states")[0].checked === false) {
     $("#state-title").hide();
   }

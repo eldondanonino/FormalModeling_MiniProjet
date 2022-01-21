@@ -1,9 +1,9 @@
 import { output, parse, process } from "./parser";
+const { readdirSync } = require("fs");
 
 const testFiles_folderPath = "./documents/test_files/";
 
 export function updateFileSelect() {
-  console.log("updateFileSelect reached");
   let selectFile = document.getElementById("selectFile");
 
   selectFile.onchange = function () {
@@ -37,9 +37,8 @@ export function getFilesPath(filePath) {
 export function getFilesInDirectory(path) {
   // Could not implement dynamic names
   //cf: 'fs.readdirSync()'
-  
-  /* let fs = require("fs");
-  let files = fs.readdirSync("documents/test_files/");
+
+  /* let files = readdirSync("documents/test_files/");
 
   console.log(files); */
 }

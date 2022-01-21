@@ -1,6 +1,6 @@
 # FormalModeling_MiniProjet
 
-M2 Formal modeling project by Quentin FELTEN, Remy CHERKHAOUI and Daniil ROSSO
+M2 Formal Modeling project by Quentin FELTEN, Remy CHERKHAOUI and Daniil ROSSO
 Efrei
 
 ### Logical Symbol interpretation for the input file

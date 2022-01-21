@@ -1,7 +1,8 @@
 import { output} from "./parser";
 import { and, EX, marking, not, EU } from "./algorithms";
 
-output();
+// updateFileSelect();
+// getFilesInDirectory();
 
 console.log("Marking of p:\n");
 console.log(marking("p"));

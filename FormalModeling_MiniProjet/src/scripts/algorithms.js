@@ -113,8 +113,49 @@ export function EU(sub_func1, sub_func2) {
   return table_EU;
 }
 
-export function A_Until(sub_func1, sub_func2) {
+export function AU(sub_func1, sub_func2) {
   let table1 = marking(sub_func1);
   let table2 = marking(sub_func2);
   let L = [];
+  let nb = [];
+  let table_AU = [];
+
+  for (let i = 0; i < states.length; i++) {
+    table_AU[i] = false;
+    nb[i] = 0;
+    //counts the number of outgoing transitions for every state
+    for (let x = 0; x < transitions.length; x++) {
+      if (transitions[x] === states[i]) {
+        nb[i] += 1;
+      }
+    }
+  }
+
+  //checks for any state that verifies sub_func2 and saves it in L
+  for (let i = 0; i < states.length; i++) {
+    if (table2[i] === true) {
+      L.push(i);
+    }
+  }
+
+  while (L.length != 0) {
+    last = L.pop();
+    table_AU[last] = true;
+
+    for (let pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
+      if (transitions[pos_trans][1] === states[last]) {
+        origin = transitions[pos_trans][0];
+        pos_origin = 0;
+        for (let x = 0; x < states.length; x++) {
+          if (states[x] === origin) {
+            pos_origin = x;
+          }
+        }
+        nb[pos_origin] -= 1;
+        if (nb[pos_origin] === 0 && table1[pos_origin] === true && table_AU[pos_origin] === false) {
+          L.push(pos_origin);
+        }
+      }
+    }
+  }
 }

@@ -16,10 +16,15 @@
       color: white;
   }
 }
-
-table{
+table {
+  border-left: 2px solid grey;
+  border-bottom: 2px solid grey;
+  border-right: 2px solid grey;
+  border-top: 2px solid grey;
   border-spacing: 12px;
 }
+
+
 
 td 
 {
@@ -53,7 +58,7 @@ hr {
   overflow: visible;
 }
 
-.title {
+ .title {
   font-size: 100%;
   font-weight: bold;
 }

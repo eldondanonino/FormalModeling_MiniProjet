@@ -114,11 +114,13 @@ export function EU(sub_func1, sub_func2) {
 }
 
 export function AU(sub_func1, sub_func2) {
-  let table1 = marking(sub_func1);
-  let table2 = marking(sub_func2);
   let L = [];
   let nb = [];
   let table_AU = [];
+  let last, pos_origin, origin;
+
+  let table1 = marking(sub_func1);
+  let table2 = marking(sub_func2);
 
   for (let i = 0; i < states.length; i++) {
     table_AU[i] = false;
@@ -151,11 +153,16 @@ export function AU(sub_func1, sub_func2) {
             pos_origin = x;
           }
         }
-        nb[pos_origin] -= 1;
-        if (nb[pos_origin] === 0 && table1[pos_origin] === true && table_AU[pos_origin] === false) {
+        nb[pos_origin]--;
+        if (
+          nb[pos_origin] === 0 &&
+          table1[pos_origin] === true &&
+          table_AU[pos_origin] === false
+        ) {
           L.push(pos_origin);
         }
       }
     }
   }
+  return table_AU;
 }

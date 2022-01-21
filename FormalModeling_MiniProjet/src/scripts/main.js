@@ -1,8 +1,4 @@
-import { output} from "./parser";
-import { and, EX, marking, not, EU } from "./algorithms";
-
-// updateFileSelect();
-// getFilesInDirectory();
+import { and, EX, marking, not, EU, AU } from "./algorithms";
 
 console.log("Marking of p:\n");
 console.log(marking("p"));
@@ -16,3 +12,5 @@ console.log("EX of p:\n");
 console.log(EX("p"));
 console.log("E(q U p):\n");
 console.log(EU("q", "p"));
+console.log("A(q U p):\n");
+console.log(AU("q", "p"));

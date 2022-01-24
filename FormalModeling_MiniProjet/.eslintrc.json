@@ -3,10 +3,13 @@
   "env": {
     "browser": true,
     "es6": true,
-    "worker": true
+    "worker": true,
+    "rules": {
+      "quotes": [2, "double", { "avoidEscape": true }]
+    }
   },
   "parserOptions": {
     "ecmaVersion": 10,
-    "sourceType": "script"
+    "sourceType": "module"
   }
 }

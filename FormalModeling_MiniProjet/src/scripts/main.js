@@ -1,9 +1,16 @@
-function counter() {
-  let seconds = 0;
-  setInterval(() => {
-    seconds += 2;
-    document.getElementById('app').innerHTML = `<p>You have been here for ${seconds} seconds.</p>`;
-  }, 1000);
-}
+import { and, EX, marking, not, EU, AU } from "./algorithms";
 
-counter();
+console.log("Marking of p:\n");
+console.log(marking("p"));
+console.log("Marking of q:\n");
+console.log(marking("q"));
+console.log("Not p:\n");
+console.log(not("p"));
+console.log("p and q:\n");
+console.log(and("p", "q"));
+console.log("EX of p:\n");
+console.log(EX("p"));
+console.log("E(q U p):\n");
+console.log(EU("q", "p"));
+console.log("A(q U p):\n");
+console.log(AU("q", "p"));

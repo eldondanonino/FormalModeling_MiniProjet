@@ -2,7 +2,7 @@ import { process } from "./process";
 import { display } from "./output";
 
 const filePath = "documents/test_files/";
-// const fileName = "test2";
+// const fileName = "file2";
 
 // Display elements
 export function output(fileName) {
@@ -20,12 +20,12 @@ export function parse(fileName) {
   // Sorry for the hard-coding :(
   // fs is kinda wanky
   switch (fileName) {
-    case "./documents/test_files/test1.txt":
-      text = fs.readFileSync("./documents/test_files/test1.txt", "utf-8");
+    case "./documents/test_files/file1.txt":
+      text = fs.readFileSync("./documents/test_files/file1.txt", "utf-8");
       break;
 
-    case "./documents/test_files/test2.txt":
-      text = fs.readFileSync("./documents/test_files/test2.txt", "utf-8");
+    case "./documents/test_files/file2.txt":
+      text = fs.readFileSync("./documents/test_files/file2.txt", "utf-8");
       break;
 
     default:

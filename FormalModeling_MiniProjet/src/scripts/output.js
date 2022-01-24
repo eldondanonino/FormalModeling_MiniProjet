@@ -28,28 +28,22 @@ $(document).ready(function () {
       $('.node:not(".title")').remove();
 
       // TODO: not have the select file hardcoded
-      switch (selectedFile) {
-        case "test1":
-          states = process(parse("./documents/test_files/test1.txt")).states;
-          tuples = process(parse("./documents/test_files/test1.txt")).tuples;
-          transitions = process(
-            parse("./documents/test_files/test1.txt")
-          ).transitions;
-          initial = process(parse("./documents/test_files/test1.txt")).initial;
-          break;
 
-        case "test2":
-          states = process(parse("./documents/test_files/test2.txt")).states;
-          tuples = process(parse("./documents/test_files/test2.txt")).tuples;
-          transitions = process(
-            parse("./documents/test_files/test2.txt")
-          ).transitions;
-          initial = process(parse("./documents/test_files/test2.txt")).initial;
-          break;
-
-        default:
-          hideAllTitles();
-          break;
+      if (selectedFile != "") {
+        states = process(
+          parse("./documents/test_files/" + selectedFile + ".txt")
+        ).states;
+        tuples = process(
+          parse("./documents/test_files/" + selectedFile + ".txt")
+        ).tuples;
+        transitions = process(
+          parse("./documents/test_files/" + selectedFile + ".txt")
+        ).transitions;
+        initial = process(
+          parse("./documents/test_files/" + selectedFile + ".txt")
+        ).initial;
+      } else {
+        hideAllTitles();
       }
 
       if ($("#cb-states")[0].checked === true) displayStates();

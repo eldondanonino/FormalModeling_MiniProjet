@@ -1,6 +1,6 @@
 # FormalModeling_MiniProjet
 
-M2 Formal modeling project by Quentin FELTEN, Remy CHERKHAOUI and Daniil ROSSO
+M2 Formal Modeling project by Quentin FELTEN, Remy CHERKHAOUI and Daniil ROSSO
 Efrei
 
 ### Logical Symbol interpretation for the input file
@@ -19,12 +19,12 @@ Efrei
 
 ### Glossary
 
-- A → All
-- E → Exists
-- X → Next
-- G → Globally
-- F → Finally
-- x U y → x Until y
+- For All   → A 
+- Exists    → E
+- Next      → X
+- Globally  → G 
+- Finally   → F
+- x Until y → x U y
 
 ### Input format
 

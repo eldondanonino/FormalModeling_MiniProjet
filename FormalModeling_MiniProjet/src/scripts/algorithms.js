@@ -1,7 +1,7 @@
 import { parse } from "./parser";
 import { process } from "./process";
 
-let data = process(parse("./documents/test_files/test2.txt"));
+let data = process(parse("./documents/test_files/file2.txt"));
 let tuples = data.tuples;
 let states = data.states;
 let transitions = data.transitions;

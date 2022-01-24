@@ -1,10 +1,12 @@
 import { parse } from "./parser";
 import { updateFileSelect, getFilesInDirectory } from "./getFiles";
 import { process } from "./process";
+import { BaseAlgorithms } from "./algorithmsOutput";
 
 // updateFileSelect();
 
 let states, tuples, transitions, initial;
+let algorithms;
 let flag = false; // On file change: set to false
 
 let queue = [];
@@ -30,6 +32,8 @@ $(document).ready(function () {
       // TODO: not have the select file hardcoded
 
       if (selectedFile != "") {
+        BaseAlgorithms();
+
         states = process(
           parse("./documents/test_files/" + selectedFile + ".txt")
         ).states;
@@ -42,6 +46,7 @@ $(document).ready(function () {
         initial = process(
           parse("./documents/test_files/" + selectedFile + ".txt")
         ).initial;
+        algorithms = BaseAlgorithms();
       } else {
         hideAllTitles();
       }

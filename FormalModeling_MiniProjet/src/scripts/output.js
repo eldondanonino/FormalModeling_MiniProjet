@@ -10,12 +10,17 @@ let flag = false; // On file change: set to false
 let queue = [];
 
 $(document).ready(function () {
-
   $("*[id*=cb-]").on("change", function () {
     flag = false;
   });
 
+  $("#selectFile").on("change", function () {
+    flag = false;
+  });
+
   $("#selectFile-validate").on("click", function () {
+    let selectedFile = $("#selectFile").val();
+
     if (!flag) {
       flag = true;
 
@@ -23,12 +28,29 @@ $(document).ready(function () {
       $('.node:not(".title")').remove();
 
       // TODO: not have the select file hardcoded
-      states = process(parse("./documents/test_files/test2.txt")).states;
-      tuples = process(parse("./documents/test_files/test2.txt")).tuples;
-      transitions = process(
-        parse("./documents/test_files/test2.txt")
-      ).transitions;
-      initial = process(parse("./documents/test_files/test2.txt")).initial;
+      switch (selectedFile) {
+        case "test1":
+          states = process(parse("./documents/test_files/test1.txt")).states;
+          tuples = process(parse("./documents/test_files/test1.txt")).tuples;
+          transitions = process(
+            parse("./documents/test_files/test1.txt")
+          ).transitions;
+          initial = process(parse("./documents/test_files/test1.txt")).initial;
+          break;
+
+        case "test2":
+          states = process(parse("./documents/test_files/test2.txt")).states;
+          tuples = process(parse("./documents/test_files/test2.txt")).tuples;
+          transitions = process(
+            parse("./documents/test_files/test2.txt")
+          ).transitions;
+          initial = process(parse("./documents/test_files/test2.txt")).initial;
+          break;
+
+        default:
+          hideAllTitles();
+          break;
+      }
 
       if ($("#cb-states")[0].checked === true) displayStates();
       if ($("#cb-tuples")[0].checked === true) displayTuples();
@@ -93,4 +115,13 @@ function hideUncheckedTitles() {
   if ($("#cb-initial-states")[0].checked == false) {
     $("#initial-states").attr("hidden", true);
   }
+}
+
+function hideAllTitles() {
+  $("*[id*=cb-]").prop("checked", false);
+
+  $("#states").attr("hidden", true);
+  $("#tuples").attr("hidden", true);
+  $("#transitions").attr("hidden", true);
+  $("#initial-states").attr("hidden", true);
 }

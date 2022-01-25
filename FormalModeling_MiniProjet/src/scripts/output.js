@@ -36,21 +36,15 @@ $(document).ready(function () {
       if (selectedFile != "") {
         let atom1 = $("#selectAP1").find(":selected").text();
         let atom2 = $("#selectAP2").find(":selected").text();
-        base_algorithms = BaseAlgorithms(atom1, atom2);
+        let processed = process(
+          parse("./documents/test_files/" + selectedFile + ".txt")
+        );
 
-        states = process(
-          parse("./documents/test_files/" + selectedFile + ".txt")
-        ).states;
-        tuples = process(
-          parse("./documents/test_files/" + selectedFile + ".txt")
-        ).tuples;
-        transitions = process(
-          parse("./documents/test_files/" + selectedFile + ".txt")
-        ).transitions;
-        initial = process(
-          parse("./documents/test_files/" + selectedFile + ".txt")
-        ).initial;
-        algorithms = BaseAlgorithms();
+        states = processed.states;
+        tuples = processed.tuples;
+        transitions = processed.transitions;
+        initial = processed.initial;
+        base_algorithms = BaseAlgorithms(atom1, atom2);
       } else {
         hideAllTitles();
       }

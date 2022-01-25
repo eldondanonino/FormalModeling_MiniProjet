@@ -1,14 +1,13 @@
 import { and, EX, marking, not, EU, AU } from "./algorithms";
 
-export function BaseAlgorithms() {
-  console.clear();
-
+export function BaseAlgorithms(atom1, atom2) {
+  //weird interaction : cannot log the atoms
   return {
-    marking: marking("p"),
-    not: not("p"),
-    and: and("p", "q"),
-    ex: EX("p"),
-    eu: EU("q", "p"),
-    au: AU("q", "p"),
+    marking: marking(atom1),
+    not: not(atom1),
+    and: and(atom1, atom2),
+    ex: EX(atom1),
+    eu: EU(atom1, atom2),
+    au: AU(atom1, atom2),
   };
 }

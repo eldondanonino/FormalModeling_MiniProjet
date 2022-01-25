@@ -8,7 +8,6 @@ let transitions = data.transitions;
 
 export function marking(atomicProp) {
   let table = [];
-
   tuples.forEach(function iter(index) {
     index.includes(atomicProp) ? table.push(true) : table.push(false); //put the result in the truth table
   });

@@ -1,8 +1,6 @@
 import { parse } from "./parser";
-import { updateFileSelect, getFilesInDirectory } from "./getFiles";
 import { process } from "./process";
 import { BaseAlgorithms } from "./algorithmsOutput";
-import { marking } from "./algorithms";
 
 let states, tuples, transitions, initial, base_algorithms;
 let algorithms;
@@ -12,10 +10,16 @@ $(document).ready(function () {
   $("*[id*=cb-]").on("change", function () {
     flag = false;
   });
+
   $("#selectFile").on("change", function () {
     atomicHandler();
     flag = false;
   });
+
+  $("*[id*=selectAP]").on("change", function () {
+    updateAlgorithms();
+  });
+
   $("#cb-algorithms").on("change", function () {
     atomicHandler();
   });
@@ -27,12 +31,13 @@ $(document).ready(function () {
       flag = true;
 
       hideUncheckedTitles();
-      $('.node:not(".title")').remove();
-
-      // TODO: not have the select file hardcoded
+      $('.node:not(".title"):not(".algorithms")').remove();
 
       if (selectedFile != "") {
-        base_algorithms = BaseAlgorithms();
+        let atom1 = $("#selectAP1").find(":selected").text();
+        let atom2 = $("#selectAP2").find(":selected").text();
+        base_algorithms = BaseAlgorithms(atom1, atom2);
+
         states = process(
           parse("./documents/test_files/" + selectedFile + ".txt")
         ).states;
@@ -130,6 +135,7 @@ function displayAlgorithms(base_algorithms) {
 
     $("#algorithms").append(tmp);
     $("#algorithms tr").addClass("node");
+    $("#algorithms tr").addClass("algorithms");
   });
 }
 
@@ -165,26 +171,38 @@ function atomicHandler() {
   $("#selectAP2").empty();
   $("#cb-algorithms").is(":checked")
     ? $("*[id*=selectAP]").attr("hidden", false)
-    : ($("*[id*=selectAP]").attr("hidden", true));
+    : $("*[id*=selectAP]").attr("hidden", true);
 
   if ($("#selectFile").val() != "") {
     let tuples = process(
       parse("./documents/test_files/" + $("#selectFile").val() + ".txt")
     ).tuples;
+
     let propositions = [];
+
     tuples.forEach(function (tuple) {
       for (let i = 1; i < tuple.length; i++) {
         propositions.includes(tuple[i]) ? true : propositions.push(tuple[i]);
       }
     });
-    propositions = propositions.filter(item => item !== "~")
-    propositions.forEach(function (value,index) {
+
+    propositions = propositions.filter((item) => item !== "~");
+
+    propositions.forEach(function (value, index) {
       $("#selectAP1").append(
         `<option value="${propositions[index]}">${propositions[index]}</option>`
-      )
+      );
       $("#selectAP2").append(
         `<option value="${propositions[index]}">${propositions[index]}</option>`
-      )
+      );
     });
   }
+}
+
+function updateAlgorithms() {
+  $('.algorithms:not(".title")').remove();
+  let atom1 = $("#selectAP1").find(":selected").text();
+  let atom2 = $("#selectAP2").find(":selected").text();
+  base_algorithms = BaseAlgorithms(atom1, atom2);
+  displayAlgorithms(base_algorithms);
 }

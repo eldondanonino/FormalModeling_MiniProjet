@@ -2,10 +2,11 @@ import { parse } from "./parser";
 import { updateFileSelect, getFilesInDirectory } from "./getFiles";
 import { process } from "./process";
 import { BaseAlgorithms } from "./algorithmsOutput";
+import { marking } from "./algorithms";
 
 // updateFileSelect();
 
-let states, tuples, transitions, initial,base_algorithms;
+let states, tuples, transitions, initial, base_algorithms;
 let algorithms;
 let flag = false; // On file change: set to false
 
@@ -54,7 +55,8 @@ $(document).ready(function () {
       if ($("#cb-tuples")[0].checked === true) displayTuples();
       if ($("#cb-transitions")[0].checked === true) displayTransitions();
       if ($("#cb-initial-states")[0].checked === true) displayInitialStates();
-      if ($("#cb-algorithms")[0].checked === true) displayAlgorithms();
+      if ($("#cb-algorithms")[0].checked === true)
+        displayAlgorithms(base_algorithms);
     }
   });
 });
@@ -101,8 +103,35 @@ function displayInitialStates() {
   $("#initial-states tr").addClass("node");
 }
 
-function displayAlgorithms(){
+function displayAlgorithms(base_algorithms) {
   $("#algorithms").removeAttr("hidden");
+  let tmp = "";
+  states.forEach(function (state, index) {
+    tmp = `<tr>`;
+    tmp += `<td class="node" style="width:15%">${states[index]}</td>`;
+    tmp += `<td class="node" style="width:15%; ${
+      base_algorithms.marking[index] ? 'color:green"' : 'color:red"'
+    }>${base_algorithms.marking[index]}</td>`;
+    tmp += `<td class="node" style="width:15%; ${
+      base_algorithms.not[index] ? 'color:green"' : 'color:red"'
+    }>${base_algorithms.not[index]}</td>`;
+    tmp += `<td class="node" style="width:15%; ${
+      base_algorithms.and[index] ? 'color:green"' : 'color:red"'
+    }>${base_algorithms.and[index]}</td>`;
+    tmp += `<td class="node" style="width:15%; ${
+      base_algorithms.ex[index] ? 'color:green"' : 'color:red"'
+    }>${base_algorithms.ex[index]}</td>`;
+    tmp += `<td class="node" style="width:15%; ${
+      base_algorithms.eu[index] ? 'color:green"' : 'color:red"'
+    }>${base_algorithms.eu[index]}</td>`;
+    tmp += `<td class="node" style="width:15%; ${
+      base_algorithms.au[index] ? 'color:green"' : 'color:red"'
+    }>${base_algorithms.au[index]}</td>`;
+    tmp += `</tr>`;
+
+    $("#algorithms").append(tmp);
+    $("#algorithms tr").addClass("node");
+  });
 }
 
 function hideUncheckedTitles() {
@@ -125,10 +154,9 @@ function hideUncheckedTitles() {
 
 function hideAllTitles() {
   $("*[id*=cb-]").prop("checked", false);
-
   $("#states").attr("hidden", true);
   $("#tuples").attr("hidden", true);
   $("#transitions").attr("hidden", true);
   $("#initial-states").attr("hidden", true);
-  $("#algorithms").attr("hidden",true);
+  $("#algorithms").attr("hidden", true);
 }

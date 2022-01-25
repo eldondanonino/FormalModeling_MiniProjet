@@ -4,21 +4,20 @@ import { process } from "./process";
 import { BaseAlgorithms } from "./algorithmsOutput";
 import { marking } from "./algorithms";
 
-// updateFileSelect();
-
 let states, tuples, transitions, initial, base_algorithms;
 let algorithms;
 let flag = false; // On file change: set to false
-
-let queue = [];
 
 $(document).ready(function () {
   $("*[id*=cb-]").on("change", function () {
     flag = false;
   });
-
   $("#selectFile").on("change", function () {
+    atomicHandler();
     flag = false;
+  });
+  $("#cb-algorithms").on("change", function () {
+    atomicHandler();
   });
 
   $("#selectFile-validate").on("click", function () {
@@ -159,4 +158,33 @@ function hideAllTitles() {
   $("#transitions").attr("hidden", true);
   $("#initial-states").attr("hidden", true);
   $("#algorithms").attr("hidden", true);
+}
+
+function atomicHandler() {
+  $("#selectAP1").empty();
+  $("#selectAP2").empty();
+  $("#cb-algorithms").is(":checked")
+    ? $("*[id*=selectAP]").attr("hidden", false)
+    : ($("*[id*=selectAP]").attr("hidden", true));
+
+  if ($("#selectFile").val() != "") {
+    let tuples = process(
+      parse("./documents/test_files/" + $("#selectFile").val() + ".txt")
+    ).tuples;
+    let propositions = [];
+    tuples.forEach(function (tuple) {
+      for (let i = 1; i < tuple.length; i++) {
+        propositions.includes(tuple[i]) ? true : propositions.push(tuple[i]);
+      }
+    });
+    propositions = propositions.filter(item => item !== "~")
+    propositions.forEach(function (value,index) {
+      $("#selectAP1").append(
+        `<option value="${propositions[index]}">${propositions[index]}</option>`
+      )
+      $("#selectAP2").append(
+        `<option value="${propositions[index]}">${propositions[index]}</option>`
+      )
+    });
+  }
 }

@@ -85,11 +85,18 @@ function displayTuples() {
 
 function displayTransitions() {
   $("#transitions").removeAttr("hidden");
+  let tmp = "";
   transitions.forEach(function (value) {
-    $("#transitions").append(
-      `<tr><td class="node">${value[0]}</td><td class="node">${value[1]}</td></tr>`
-    );
+    if (value[0] !== tmp) {
+      $("#transitions").append(
+        `</tr><tr><td class="node">${value[0]}</td><td class="node">${value[1]}</td>`
+      );
+      tmp = value[0];
+    } else {
+      $("#transitions tr:last").append(`<td class="node">${value[1]}</td>`);
+    }
   });
+  $("#transitions").append(`</tr>`);
   $("#transitions tr").addClass("node");
 }
 

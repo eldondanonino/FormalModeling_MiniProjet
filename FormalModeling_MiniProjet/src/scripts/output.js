@@ -5,7 +5,7 @@ import { BaseAlgorithms } from "./algorithmsOutput";
 
 // updateFileSelect();
 
-let states, tuples, transitions, initial;
+let states, tuples, transitions, initial,base_algorithms;
 let algorithms;
 let flag = false; // On file change: set to false
 
@@ -32,8 +32,7 @@ $(document).ready(function () {
       // TODO: not have the select file hardcoded
 
       if (selectedFile != "") {
-        BaseAlgorithms();
-
+        base_algorithms = BaseAlgorithms();
         states = process(
           parse("./documents/test_files/" + selectedFile + ".txt")
         ).states;
@@ -55,6 +54,7 @@ $(document).ready(function () {
       if ($("#cb-tuples")[0].checked === true) displayTuples();
       if ($("#cb-transitions")[0].checked === true) displayTransitions();
       if ($("#cb-initial-states")[0].checked === true) displayInitialStates();
+      if ($("#cb-algorithms")[0].checked === true) displayAlgorithms();
     }
   });
 });
@@ -101,6 +101,10 @@ function displayInitialStates() {
   $("#initial-states tr").addClass("node");
 }
 
+function displayAlgorithms(){
+  $("#algorithms").removeAttr("hidden");
+}
+
 function hideUncheckedTitles() {
   if ($("#cb-states")[0].checked === false) {
     $("#states").attr("hidden", true);
@@ -114,6 +118,9 @@ function hideUncheckedTitles() {
   if ($("#cb-initial-states")[0].checked == false) {
     $("#initial-states").attr("hidden", true);
   }
+  if ($("#cb-algorithms")[0].checked == false) {
+    $("#algorithms").attr("hidden", true);
+  }
 }
 
 function hideAllTitles() {
@@ -123,4 +130,5 @@ function hideAllTitles() {
   $("#tuples").attr("hidden", true);
   $("#transitions").attr("hidden", true);
   $("#initial-states").attr("hidden", true);
+  $("#algorithms").attr("hidden",true);
 }

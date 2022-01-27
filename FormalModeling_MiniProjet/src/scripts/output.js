@@ -1,4 +1,4 @@
-import { parse } from "./parser";
+import { parse, CTLParser } from "./parser";
 import { process } from "./process";
 import { BaseAlgorithms } from "./algorithmsOutput";
 
@@ -235,16 +235,16 @@ function ctlHandler() {
 }
 
 function customCtlHandler() {
-  mainParser($("#custom-ctl").val(), 0)
+  CTLParser($("#custom-ctl").val())
     ? alert("your ctl returns true!")
     : alert("your ctl returns false!");
   $("#custom-ctl").val("");
 }
 
-///TEMPORARY
-function mainParser(a, b) {
-  //actual parser in parser.js
-  console.log("parser soon tm" + a + b);
-  Math.floor(Math.random() * 4) % 2 ? (a = true) : (a = false);
-  return a;
-}
+// ///TEMPORARY
+// function CTLParser(a, b) {
+//   //actual parser in parser.js
+//   console.log("parser soon tm" + a + b);
+//   Math.floor(Math.random() * 4) % 2 ? (a = true) : (a = false);
+//   return a;
+// }

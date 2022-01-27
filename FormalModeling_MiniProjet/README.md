@@ -5,26 +5,18 @@ Efrei
 
 ### Logical Symbol interpretation for the input file
 
-- NOT → !
-- AND → &
-- OR → OR
-- THEN → >
-- IFAOF → <>
-- BELONGS TO → BELONGS
-- EXISTS → EXISTS
-- FOR EVERY → v
-- PHI → PHI
-- PSI → PSI
-- IS TRUE → IST
+- NOT → !(x)
+- x AND y → &(x,y)
+- x OR y → |(x,y)
 
 ### Glossary
 
-- For All   → A 
-- Exists    → E
-- Next      → X
-- Globally  → G 
-- Finally   → F
-- x Until y → x U y
+- For All x   → A(x)
+- Exists x   → E(x)
+- Next x     → X(x)
+- Globally x → G(x)
+- Finally x  → F(x)
+- x Until y → U(x,y)
 
 ### Input format
 

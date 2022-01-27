@@ -8,7 +8,7 @@ const filePath = "documents/test_files/";
 // Display elements
 export function output(fileName) {
   let data = process(parse(fileName));
-  display(data); 
+  display(data);
 }
 
 export function parse(fileName) {
@@ -46,23 +46,27 @@ export function parse(fileName) {
   return textByLine;
 }
 
-export function mainParser(CTLfunc, start){
-  let CTLarray = CTLfunc.split('');
-  let newStart = 0;
-  let subFuncResult = "";
-  let result = [];
+export function CTLParser(CTLfunc) { //recursive ctl parser
+  // let CTLarray = CTLfunc.split('');
+  // let newStart = 0;
+  // let subFuncResult = "";
+  // let result = [];
 
-  for(let i = start; i < CTLarray.length; i++){
-      if(CTLarray[i] == "("){
-          newStart = i + 1;
-          subFuncResult = parser(CTLfunc, newStart);
-      }
-  }
-  for(let x = 0; x < CTLarray.length; x++){
-      if(CTLarray[x] == "N" & CTLarray[x + 1] == "O" & CTLarray[x + 2] == "T"){
-          if(CTLarray[x + 3] == newStart){
-              subFuncResult = not(subFuncResult);
-          }
-      }
-  }
+  // for(let i = start; i < CTLarray.length; i++){
+  //     if(CTLarray[i] == "("){
+  //         newStart = i + 1;
+  //         subFuncResult = parser(CTLfunc, newStart);
+  //     }
+  // }
+  // for(let x = 0; x < CTLarray.length; x++){
+  //     if(CTLarray[x] == "N" & CTLarray[x + 1] == "O" & CTLarray[x + 2] == "T"){
+  //         if(CTLarray[x + 3] == newStart){
+  //             subFuncResult = not(subFuncResult);
+  //         }
+  //     }
+  // }
+
+  console.log(CTLfunc);
+  
+  return false;
 }

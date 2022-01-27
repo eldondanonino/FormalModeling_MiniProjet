@@ -13,6 +13,7 @@ $(document).ready(function () {
   });
   $("#selectFile").on("change", function () {
     atomicHandler();
+    ctlHandler();
     flag = false;
   });
   $("*[id*=selectAP]").on("change", function () {
@@ -141,9 +142,9 @@ function displayAlgorithms(base_algorithms) {
 }
 
 function displayCTL() {
-  let checkedCTL = "NOT IMPLEMENTED YET" /* checkCTL(); */;
+  let checkedCTL = "NOT IMPLEMENTED YET"; /* checkCTL(); */
   //TODO: create and import checkCTL()
-  
+
   $("#ctl").removeAttr("hidden");
   $("#ctl").addClass("node");
 
@@ -176,7 +177,7 @@ function hideAllTitles() {
   $("#transitions").attr("hidden", true);
   $("#initial-states").attr("hidden", true);
   $("#algorithms").attr("hidden", true);
-  $("#ctl").attr("hidden", true);  
+  $("#ctl").attr("hidden", true);
 }
 
 function atomicHandler() {
@@ -218,4 +219,13 @@ function updateAlgorithms() {
   let atom2 = $("#selectAP2").find(":selected").text();
   base_algorithms = BaseAlgorithms(atom1, atom2);
   displayAlgorithms(base_algorithms);
+}
+
+function ctlHandler() {
+  $("#custom-ctl").val("");
+  $("#selectFile").find(":selected").text() == "--Select a file"
+    ? ($("#custom-ctl-btn").attr("hidden", true),
+      $("#custom-ctl").attr("hidden", true))
+    : ($("#custom-ctl-btn").removeAttr("hidden"),
+      $("#custom-ctl").removeAttr("hidden"));
 }

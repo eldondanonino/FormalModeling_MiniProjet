@@ -236,9 +236,8 @@ function ctlHandler() {
 
 function customCtlHandler() {
   // let a = "A(&(!(U(p,q)),E(&(p,q))))"
-  let a = "&(p,q)"
-  // CTLParser($("#custom-ctl").val())
-  CTLParser(a,1)
+  let a = CTLParser($("#custom-ctl").val()).toString();
+  a[1] //change this to ini state
     ? alert("your ctl returns true!")
     : alert("your ctl returns false!");
   $("#custom-ctl").val("");

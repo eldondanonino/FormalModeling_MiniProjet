@@ -52,26 +52,6 @@ export function parse(fileName) {
 }
 
 export function CTLParser(input, initial) {
-  //input [Operand,v1,v2]
-  //recursive ctl parser
-  // let CTLarray = CTLfunc.split('');
-  // let newStart = 0;
-  // let subFuncResult = "";
-  // let result = [];
-
-  // for(let i = start; i < CTLarray.length; i++){
-  //     if(CTLarray[i] == "("){
-  //         newStart = i + 1;
-  //         subFuncResult = parser(CTLfunc, newStart);
-  //     }
-  // }
-  // for(let x = 0; x < CTLarray.length; x++){
-  //     if(CTLarray[x] == "N" & CTLarray[x + 1] == "O" & CTLarray[x + 2] == "T"){
-  //         if(CTLarray[x + 3] == newStart){
-  //             subFuncResult = not(subFuncResult);
-  //         }
-  //     }
-  // }
   let index;
   let result;
   let operator;
@@ -80,13 +60,15 @@ export function CTLParser(input, initial) {
 
   console.log("input");
   console.log(input);
+
   if (input.charAt(0).match(/!|&/)) {
     input.charAt(input.length - 1) == ")"
       ? (input = input.slice(0, -1))
-      : console.log("errrr");
+      : console.log("error");
   } else {
-    console.log("is it true?" + input);
-    return input; //no algorithm needed, end of recursion
+    console.log("input not logical " + input);
+    return false;
+    //no algorithm needed, end of recursion
   }
   input = input.split(/\((.+)/);
   operator = input[0];
@@ -95,6 +77,7 @@ export function CTLParser(input, initial) {
 
   //if first char is algo, recursive
   if (input[1].charAt(0).match(/!|&/)) {
+    console.log("first element is logical");
     let para_counter = 1;
     for (let i = 2; i < input[1].length; i++) {
       if (input[1].charAt(i) == "(") para_counter++;
@@ -105,11 +88,10 @@ export function CTLParser(input, initial) {
       }
     }
     elements = split_at_index(input[1], index);
+    console.log("recursive call of first logical element");
     elements[0] = CTLParser(elements[0], initial);
   } else {
-    console.log("not a logical operation");
     elements = input[1].split(/,(.+)/);
-    console.log(elements);
     elements.pop();
   }
 
@@ -136,9 +118,7 @@ export function CTLParser(input, initial) {
       console.log("ko");
       break;
   }
-  Array.isArray(result)
-    ? (result = result)
-    : console.log("not an array");
+  Array.isArray(result) ? (result = result) : console.log("not an array");
   console.log("result: " + result);
-  return result; //return the tableoftruth[initialState]
+  return result; //return the tableoftruth
 }

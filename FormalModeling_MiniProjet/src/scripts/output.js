@@ -236,9 +236,9 @@ function ctlHandler() {
 
 function customCtlHandler() {
   // let a = "A(&(!(U(p,q)),E(&(p,q))))"
-  let a = "!(a,&(x,y))";
+  let a = "&(p,q)"
   // CTLParser($("#custom-ctl").val())
-  CTLParser(a)
+  CTLParser(a,1)
     ? alert("your ctl returns true!")
     : alert("your ctl returns false!");
   $("#custom-ctl").val("");

@@ -1,9 +1,14 @@
 import { process } from "./process";
 import { display } from "./output";
-import { not } from "./algorithms";
+import { not, and } from "./algorithms";
 
 const filePath = "documents/test_files/";
 // const fileName = "file2";
+
+function split_at_index(value, index) {
+  //"borrowed code for convenience, will be removed"
+  return [value.substring(0, index), value.substring(index + 1)];
+}
 
 // Display elements
 export function output(fileName) {
@@ -46,7 +51,7 @@ export function parse(fileName) {
   return textByLine;
 }
 
-export function CTLParser(input) {
+export function CTLParser(input, initial) {
   //input [Operand,v1,v2]
   //recursive ctl parser
   // let CTLarray = CTLfunc.split('');
@@ -67,46 +72,73 @@ export function CTLParser(input) {
   //         }
   //     }
   // }
+  let index;
   let result;
+  let operator;
+  let elements = [];
   input.trim();
 
-  input.charAt(input.length - 1) == ")"
-    ? (input = input.slice(0, -1))
-    : alert("errrr");
-
-  input = input.split(/\((.+)/); //split only on the first (
-
-  input.pop(); //we get [operator, nonsplit elements]
+  console.log("input");
   console.log(input);
-  let operator = input[0];
-  input[1].charAt(0).match(/!|&/) //if the first element is not a simple atomic proposition we call recursively
-    ? console.log("deeper for v1!")//CTLParser(input[1])
-    : true;
-  let elements = input[1].split(/,(.+)/);
+  if (input.charAt(0).match(/!|&/)) {
+    input.charAt(input.length - 1) == ")"
+      ? (input = input.slice(0, -1))
+      : console.log("errrr");
+  } else {
+    console.log("is it true?" + input);
+    return input; //no algorithm needed, end of recursion
+  }
+  input = input.split(/\((.+)/);
+  operator = input[0];
+  input.pop();
+  //we should have either finished the recursive loop or [operator,unseparated values]
 
-  elements[1].charAt(0).match(/!|&/) //if the second element is not a simple atomic proposition we call recursively
-  ? console.log("deeper but for v2!")//CTLParser(elements[1])
-  : true;
+  //if first char is algo, recursive
+  if (input[1].charAt(0).match(/!|&/)) {
+    let para_counter = 1;
+    for (let i = 2; i < input[1].length; i++) {
+      if (input[1].charAt(i) == "(") para_counter++;
+      if (input[1].charAt(i) == ")") para_counter--;
+      if (para_counter == 0) {
+        index = i + 1; //the index at which to split
+        break;
+      }
+    }
+    elements = split_at_index(input[1], index);
+    elements[0] = CTLParser(elements[0], initial);
+  } else {
+    console.log("not a logical operation");
+    elements = input[1].split(/,(.+)/);
+    console.log(elements);
+    elements.pop();
+  }
 
-  elements.pop();
+  if (elements[1].charAt(0).match(/!|&/)) {
+    console.log("second element is logical");
+    //if the second element is not a simple atomic proposition we call recursively
+    elements[1] = CTLParser(elements[1], initial);
+  }
+
   console.log("operator : " + operator);
   console.log("elements : ");
   console.log(elements);
 
-  for (let i in elements) {
-    console.log(elements[i]);
-  }
   switch (operator) {
     case "!":
-      console.log("not");
+      console.log("not is reached");
+      result = not(elements[0]);
       break;
     case "&":
-      console.log("and");
+      console.log("and is reached");
+      result = and(elements[0], elements[1]);
       break;
     default:
       console.log("ko");
       break;
   }
-
+  Array.isArray(result)
+    ? (result = result)
+    : console.log("not an array");
+  console.log("result: " + result);
   return result; //return the tableoftruth[initialState]
 }

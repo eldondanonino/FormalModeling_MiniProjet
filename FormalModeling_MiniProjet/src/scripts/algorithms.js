@@ -1,7 +1,7 @@
 import { parse } from "./parser";
 import { process } from "./process";
 
-let data = process(parse("./documents/test_files/test2.txt"));
+let data = process(parse("./documents/test_files/file2.txt"));
 let tuples = data.tuples;
 let states = data.states;
 let transitions = data.transitions;
@@ -9,7 +9,7 @@ let transitions = data.transitions;
 export function marking(atomicProp) {
   let table = [];
 
-  tuples.forEach(function iter(index, value, object) {
+  tuples.forEach(function iter(index) {
     index.includes(atomicProp) ? table.push(true) : table.push(false); //put the result in the truth table
   });
 
@@ -19,14 +19,11 @@ export function marking(atomicProp) {
 export function not(sub_func) {
   let table = [];
   let table_not = [];
-  
-  if(typeof(sub_func) == "string"){
-    table = marking(sub_func);
-  }
-  else{
-    table = sub_func;
-  }
-  
+
+  typeof sub_func == "string"
+    ? (table = marking(sub_func))
+    : (table = sub_func);
+
   for (let i = 0; i < table.length; i++) {
     table[i] === true ? table_not.push(false) : table_not.push(true);
   }
@@ -39,14 +36,9 @@ export function and(sub_func1, sub_func2) {
   let table2 = [];
   let table_and = [];
 
-  if(typeof(sub_func1) == "string"){
-    table1 = marking(sub_func1);
-    table2 = marking(sub_func2);
-  }
-  else{
-    table1 = sub_func1;
-    table2 = sub_func2;
-  }
+  typeof sub_func1 == "string"
+    ? ((table1 = marking(sub_func1)), (table2 = marking(sub_func2)))
+    : ((table1 = sub_func1), (table2 = sub_func2));
 
   for (let i = 0; i < table1.length; i++) {
     table1[i] === true && table2[i] === true
@@ -61,12 +53,9 @@ export function EX(sub_func) {
   let table = [];
   let table_EX = [];
 
-  if(typeof(sub_func) == "string"){
-    table = marking(sub_func);
-  }
-  else{
-    table = sub_func;
-  }
+  typeof sub_func == "string"
+    ? (table = marking(sub_func))
+    : (table = sub_func);
 
   for (let i = 0; i < table.length; i++) {
     table_EX[i] = false;
@@ -101,15 +90,10 @@ export function EU(sub_func1, sub_func2) {
   let pos_origin = 0;
   let origin,
     last = "";
-  
-  if(typeof(sub_func1) == "string"){
-    table1 = marking(sub_func1);
-    table2 = marking(sub_func2);
-  }
-  else{
-    table1 = sub_func1;
-    table2 = sub_func2;
-  }
+
+  typeof sub_func1 == "string"
+    ? ((table1 = marking(sub_func1)), (table2 = marking(sub_func2)))
+    : ((table1 = sub_func1), (table2 = sub_func2));
 
   for (let i = 0; i < states.length; i++) {
     table_seen[i] = false;
@@ -152,15 +136,11 @@ export function AU(sub_func1, sub_func2) {
   let L = [];
   let nb = [];
   let table_AU = [];
+  let last, pos_origin, origin;
 
-  if(typeof(sub_func1) == "string"){
-    table1 = marking(sub_func1);
-    table2 = marking(sub_func2);
-  }
-  else{
-    table1 = sub_func1;
-    table2 = sub_func2;
-  }
+  typeof sub_func1 == "string"
+    ? ((table1 = marking(sub_func1)), (table2 = marking(sub_func2)))
+    : ((table1 = sub_func1), (table2 = sub_func2));
 
   for (let i = 0; i < states.length; i++) {
     table_AU[i] = false;
@@ -193,11 +173,16 @@ export function AU(sub_func1, sub_func2) {
             pos_origin = x;
           }
         }
-        nb[pos_origin] -= 1;
-        if (nb[pos_origin] === 0 && table1[pos_origin] === true && table_AU[pos_origin] === false) {
+        nb[pos_origin]--;
+        if (
+          nb[pos_origin] === 0 &&
+          table1[pos_origin] === true &&
+          table_AU[pos_origin] === false
+        ) {
           L.push(pos_origin);
         }
       }
     }
   }
+  return table_AU;
 }

@@ -22,6 +22,10 @@ $(document).ready(function () {
   $("#cb-algorithms").on("change", function () {
     atomicHandler();
   });
+  $("#custom-ctl-btn").on("click", function () {
+    customCtlHandler();
+  });
+
   $("#selectFile-validate").on("click", function () {
     let selectedFile = $("#selectFile").val();
 
@@ -228,4 +232,19 @@ function ctlHandler() {
       $("#custom-ctl").attr("hidden", true))
     : ($("#custom-ctl-btn").removeAttr("hidden"),
       $("#custom-ctl").removeAttr("hidden"));
+}
+
+function customCtlHandler() {
+  mainParser($("#custom-ctl").val(), 0)
+    ? alert("your ctl returns true!")
+    : alert("your ctl returns false!");
+  $("#custom-ctl").val("");
+}
+
+///TEMPORARY
+function mainParser(a, b) {
+  //actual parser in parser.js
+  console.log("parser soon tm" + a + b);
+  Math.floor(Math.random() * 4) % 2 ? (a = true) : (a = false);
+  return a;
 }

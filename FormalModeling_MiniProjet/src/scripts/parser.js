@@ -1,5 +1,6 @@
 import { process } from "./process";
 import { display } from "./output";
+import { not } from "./algorithms";
 
 const filePath = "documents/test_files/";
 // const fileName = "file2";
@@ -43,4 +44,25 @@ export function parse(fileName) {
   });
 
   return textByLine;
+}
+
+export function mainParser(CTLfunc, start){
+  let CTLarray = CTLfunc.split('');
+  let newStart = 0;
+  let subFuncResult = "";
+  let result = [];
+
+  for(let i = start; i < CTLarray.length; i++){
+      if(CTLarray[i] == "("){
+          newStart = i + 1;
+          subFuncResult = parser(CTLfunc, newStart);
+      }
+  }
+  for(let x = 0; x < CTLarray.length; x++){
+      if(CTLarray[x] == "N" & CTLarray[x + 1] == "O" & CTLarray[x + 2] == "T"){
+          if(CTLarray[x + 3] == newStart){
+              subFuncResult = not(subFuncResult);
+          }
+      }
+  }
 }

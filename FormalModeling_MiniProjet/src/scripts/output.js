@@ -235,16 +235,11 @@ function ctlHandler() {
 }
 
 function customCtlHandler() {
-  CTLParser($("#custom-ctl").val())
+  // let a = "A(&(!(U(p,q)),E(&(p,q))))"
+  let a = "!(a,&(x,y))";
+  // CTLParser($("#custom-ctl").val())
+  CTLParser(a)
     ? alert("your ctl returns true!")
     : alert("your ctl returns false!");
   $("#custom-ctl").val("");
 }
-
-// ///TEMPORARY
-// function CTLParser(a, b) {
-//   //actual parser in parser.js
-//   console.log("parser soon tm" + a + b);
-//   Math.floor(Math.random() * 4) % 2 ? (a = true) : (a = false);
-//   return a;
-// }

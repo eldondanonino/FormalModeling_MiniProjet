@@ -46,7 +46,9 @@ export function parse(fileName) {
   return textByLine;
 }
 
-export function CTLParser(CTLfunc) { //recursive ctl parser
+export function CTLParser(input) {
+  //input [Operand,v1,v2]
+  //recursive ctl parser
   // let CTLarray = CTLfunc.split('');
   // let newStart = 0;
   // let subFuncResult = "";
@@ -65,8 +67,46 @@ export function CTLParser(CTLfunc) { //recursive ctl parser
   //         }
   //     }
   // }
+  let result;
+  input.trim();
 
-  console.log(CTLfunc);
-  
-  return false;
+  input.charAt(input.length - 1) == ")"
+    ? (input = input.slice(0, -1))
+    : alert("errrr");
+
+  input = input.split(/\((.+)/); //split only on the first (
+
+  input.pop(); //we get [operator, nonsplit elements]
+  console.log(input);
+  let operator = input[0];
+  input[1].charAt(0).match(/!|&/) //if the first element is not a simple atomic proposition we call recursively
+    ? console.log("deeper for v1!")//CTLParser(input[1])
+    : true;
+  let elements = input[1].split(/,(.+)/);
+
+  elements[1].charAt(0).match(/!|&/) //if the second element is not a simple atomic proposition we call recursively
+  ? console.log("deeper but for v2!")//CTLParser(elements[1])
+  : true;
+
+  elements.pop();
+  console.log("operator : " + operator);
+  console.log("elements : ");
+  console.log(elements);
+
+  for (let i in elements) {
+    console.log(elements[i]);
+  }
+  switch (operator) {
+    case "!":
+      console.log("not");
+      break;
+    case "&":
+      console.log("and");
+      break;
+    default:
+      console.log("ko");
+      break;
+  }
+
+  return result; //return the tableoftruth[initialState]
 }

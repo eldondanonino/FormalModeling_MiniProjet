@@ -2,26 +2,28 @@ import { parse } from "./parser";
 import { process } from "./process";
 import { BaseAlgorithms } from "./algorithmsOutput";
 
-let states, tuples, transitions, initial, base_algorithms;
+let states, tuples, transitions, initial, base_algorithms, ctl;
 let algorithms;
-let flag = false; // On file change: set to false
+let flag = false; // On file selection change: set to false
 
+/// Listen for user input
 $(document).ready(function () {
   $("*[id*=cb-]").on("change", function () {
     flag = false;
   });
-
   $("#selectFile").on("change", function () {
     atomicHandler();
+    ctlHandler();
     flag = false;
   });
-
   $("*[id*=selectAP]").on("change", function () {
     updateAlgorithms();
   });
-
   $("#cb-algorithms").on("change", function () {
     atomicHandler();
+  });
+  $("#custom-ctl-btn").on("click", function () {
+    customCtlHandler();
   });
 
   $("#selectFile-validate").on("click", function () {
@@ -45,6 +47,7 @@ $(document).ready(function () {
         transitions = processed.transitions;
         initial = processed.initial;
         base_algorithms = BaseAlgorithms(atom1, atom2);
+        ctl = processed.ctl;
       } else {
         hideAllTitles();
       }
@@ -53,8 +56,10 @@ $(document).ready(function () {
       if ($("#cb-tuples")[0].checked === true) displayTuples();
       if ($("#cb-transitions")[0].checked === true) displayTransitions();
       if ($("#cb-initial-states")[0].checked === true) displayInitialStates();
-      if ($("#cb-algorithms")[0].checked === true)
+      if ($("#cb-algorithms")[0].checked === true) {
+        displayCTL();
         displayAlgorithms(base_algorithms);
+      }
     }
   });
 });
@@ -140,6 +145,16 @@ function displayAlgorithms(base_algorithms) {
   });
 }
 
+function displayCTL() {
+  let checkedCTL = "NOT IMPLEMENTED YET"; /* checkCTL(); */
+  //TODO: create and import checkCTL()
+
+  $("#ctl").removeAttr("hidden");
+  $("#ctl").addClass("node");
+
+  $("#ctl").append(`<p class="node">${ctl} = ${checkedCTL}</p>`);
+}
+
 function hideUncheckedTitles() {
   if ($("#cb-states")[0].checked === false) {
     $("#states").attr("hidden", true);
@@ -155,6 +170,7 @@ function hideUncheckedTitles() {
   }
   if ($("#cb-algorithms")[0].checked == false) {
     $("#algorithms").attr("hidden", true);
+    $("#ctl").attr("hidden", true);
   }
 }
 
@@ -165,6 +181,7 @@ function hideAllTitles() {
   $("#transitions").attr("hidden", true);
   $("#initial-states").attr("hidden", true);
   $("#algorithms").attr("hidden", true);
+  $("#ctl").attr("hidden", true);
 }
 
 function atomicHandler() {
@@ -206,4 +223,28 @@ function updateAlgorithms() {
   let atom2 = $("#selectAP2").find(":selected").text();
   base_algorithms = BaseAlgorithms(atom1, atom2);
   displayAlgorithms(base_algorithms);
+}
+
+function ctlHandler() {
+  $("#custom-ctl").val("");
+  $("#selectFile").find(":selected").text() == "--Select a file"
+    ? ($("#custom-ctl-btn").attr("hidden", true),
+      $("#custom-ctl").attr("hidden", true))
+    : ($("#custom-ctl-btn").removeAttr("hidden"),
+      $("#custom-ctl").removeAttr("hidden"));
+}
+
+function customCtlHandler() {
+  mainParser($("#custom-ctl").val(), 0)
+    ? alert("your ctl returns true!")
+    : alert("your ctl returns false!");
+  $("#custom-ctl").val("");
+}
+
+///TEMPORARY
+function mainParser(a, b) {
+  //actual parser in parser.js
+  console.log("parser soon tm" + a + b);
+  Math.floor(Math.random() * 4) % 2 ? (a = true) : (a = false);
+  return a;
 }

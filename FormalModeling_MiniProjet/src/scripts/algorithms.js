@@ -2,7 +2,7 @@ import { parse } from "./parser";
 import { process } from "./process";
 
 let data = "";
-let tuples;
+let tuples = [];
 let states;
 let transitions;
 
@@ -197,4 +197,22 @@ export function AU(sub_func1, sub_func2) {
     }
   }
   return table_AU;
+}
+
+export function or(sub_func1, sub_func2) {
+  let table1 = [];
+  let table2 = [];
+  let table_or = [];
+
+  typeof sub_func1 == "string"
+    ? ((table1 = marking(sub_func1)), (table2 = marking(sub_func2)))
+    : ((table1 = sub_func1), (table2 = sub_func2));
+
+  for (let i = 0; i < table1.length; i++) {
+    table1[i] === true || table2[i] === true
+      ? table_or.push(true)
+      : table_or.push(false);
+  }
+
+  return table_or;
 }

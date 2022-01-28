@@ -6,8 +6,7 @@ let tuples = [];
 let states;
 let transitions;
 
-export function fileSetter(file)
-{
+export function fileSetter(file) {
   console.log("data pre set");
   console.log(data);
   data = process(parse(file));
@@ -19,7 +18,6 @@ export function fileSetter(file)
 }
 
 export function marking(atomicProp) {
-  console.log("Marking reached!");
   let table = [];
   tuples.forEach(function iter(index) {
     index.includes(atomicProp) ? table.push(true) : table.push(false); //put the result in the truth table
@@ -49,8 +47,11 @@ export function and(sub_func1, sub_func2) {
   let table_and = [];
 
   typeof sub_func1 == "string"
-    ? ((table1 = marking(sub_func1)), (table2 = marking(sub_func2)))
-    : ((table1 = sub_func1), (table2 = sub_func2));
+    ? (table1 = marking(sub_func1))
+    : (table1 = sub_func1);
+  typeof sub_func2 == "string"
+    ? (table2 = marking(sub_func2))
+    : (table2 = sub_func2);
 
   for (let i = 0; i < table1.length; i++) {
     table1[i] === true && table2[i] === true
@@ -59,6 +60,66 @@ export function and(sub_func1, sub_func2) {
   }
 
   return table_and;
+}
+
+export function E(sub_func) {
+  //E(G(x))
+  let elements;
+
+  switch (sub_func.charAt(0)) {
+    case "X":
+      elements = sub_func.slice(2, -1).split(/,(.+)/);
+      elements.pop();
+      return EX(elements[0], elements[1]);
+
+    case "U":
+      elements = sub_func.slice(2, -1).split(/,(.+)/);
+      elements.pop();
+      return EU(elements[0], elements[1]);
+
+    case "F":
+      elements = sub_func.slice(2, -1).split(/,(.+)/);
+      elements.pop();
+      return EF(elements[0], elements[1]);
+
+    case "G":
+      elements = sub_func.slice(2, -1).split(/,(.+)/);
+      elements.pop();
+      return EG(elements[0], elements[1]);
+
+    default:
+      break;
+  }
+}
+
+export function A(sub_func) {
+  //A(G(x))
+  let elements;
+
+  switch (sub_func.charAt(0)) {
+    case "X":
+      elements = sub_func.slice(2, -1).split(/,(.+)/);
+      elements.pop();
+      return AX(elements[0], elements[1]);
+
+    case "U":
+      elements = sub_func.slice(2, -1).split(/,(.+)/);
+      elements.pop();
+      return AU(elements[0], elements[1]);
+
+    case "F":
+      elements = sub_func.slice(2, -1).split(/,(.+)/);
+      elements.pop();
+      return AF(elements[0], elements[1]);
+
+    case "G":
+      elements = sub_func.slice(2, -1).split(/,(.+)/);
+      elements.pop();
+      return AG(elements[0], elements[1]);
+
+    default:
+      break;
+  }
 }
 
 export function EX(sub_func) {
@@ -93,6 +154,36 @@ export function EX(sub_func) {
   return table_EX;
 }
 
+export function AX(sub_func){
+  let table = [];
+  let table_AX = [];
+  let state_prime, pos_state_prime;
+
+  typeof sub_func == "string"
+    ? (table = marking(sub_func))
+    : (table = sub_func);
+
+  for (let i = 0; i < states.length; i++) {
+    table_AX[i] = true;
+
+    for (let pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
+      if (transitions[pos_trans][0] === states[i]) {
+        state_prime = transitions[pos_trans][1];
+        pos_state_prime = 0;
+        for (let x = 0; x < states.length; x++) {
+          if (states[x] === state_prime) {
+            pos_state_prime = x;
+          }
+        }
+        if (table[pos_state_prime] === false) {
+          table_AX[i] = false;
+        }
+      }
+    }
+  }
+  return table_AX;
+}
+
 export function EU(sub_func1, sub_func2) {
   let table1 = [];
   let table2 = [];
@@ -104,8 +195,11 @@ export function EU(sub_func1, sub_func2) {
     last = "";
 
   typeof sub_func1 == "string"
-    ? ((table1 = marking(sub_func1)), (table2 = marking(sub_func2)))
-    : ((table1 = sub_func1), (table2 = sub_func2));
+    ? (table1 = marking(sub_func1))
+    : (table1 = sub_func1);
+  typeof sub_func2 == "string"
+    ? (table2 = marking(sub_func2))
+    : (table2 = sub_func2);
 
   for (let i = 0; i < states.length; i++) {
     table_seen[i] = false;
@@ -151,8 +245,11 @@ export function AU(sub_func1, sub_func2) {
   let last, pos_origin, origin;
 
   typeof sub_func1 == "string"
-    ? ((table1 = marking(sub_func1)), (table2 = marking(sub_func2)))
-    : ((table1 = sub_func1), (table2 = sub_func2));
+    ? (table1 = marking(sub_func1))
+    : (table1 = sub_func1);
+  typeof sub_func2 == "string"
+    ? (table2 = marking(sub_func2))
+    : (table2 = sub_func2);
 
   for (let i = 0; i < states.length; i++) {
     table_AU[i] = false;
@@ -205,8 +302,11 @@ export function or(sub_func1, sub_func2) {
   let table_or = [];
 
   typeof sub_func1 == "string"
-    ? ((table1 = marking(sub_func1)), (table2 = marking(sub_func2)))
-    : ((table1 = sub_func1), (table2 = sub_func2));
+    ? (table1 = marking(sub_func1))
+    : (table1 = sub_func1);
+  typeof sub_func2 == "string"
+    ? (table2 = marking(sub_func2))
+    : (table2 = sub_func2);
 
   for (let i = 0; i < table1.length; i++) {
     table1[i] === true || table2[i] === true
@@ -216,3 +316,4 @@ export function or(sub_func1, sub_func2) {
 
   return table_or;
 }
+

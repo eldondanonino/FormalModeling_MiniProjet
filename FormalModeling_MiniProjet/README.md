@@ -8,15 +8,16 @@ Efrei
 - NOT → !(x)
 - x AND y → &(x,y)
 - x OR y → |(x,y)
+-x THEN y → T(x,y)
 
 ### Glossary
 
-- For All x   → A(x)
-- Exists x   → E(x)
-- Next x     → X(x)
-- Globally x → G(x)
-- Finally x  → F(x)
-- x Until y → U(x,y)
+- For All   → A
+- Exists   → E
+- Next x     → EX(x) or AX(x)
+- Globally x → EG(x) or AG(x)
+- Finally x  → EF(x) or AF(x)
+- x Until y → EU(x,y) or AU(x,y)
 
 ### Input format
 

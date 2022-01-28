@@ -1,12 +1,25 @@
 import { parse } from "./parser";
 import { process } from "./process";
 
-let data = process(parse("./documents/test_files/file2.txt"));
-let tuples = data.tuples;
-let states = data.states;
-let transitions = data.transitions;
+let data = "";
+let tuples;
+let states;
+let transitions;
+
+export function fileSetter(file)
+{
+  console.log("data pre set");
+  console.log(data);
+  data = process(parse(file));
+  tuples = data.tuples;
+  states = data.states;
+  transitions = data.transitions;
+  console.log("data post set");
+  console.log(data);
+}
 
 export function marking(atomicProp) {
+  console.log("Marking reached!");
   let table = [];
   tuples.forEach(function iter(index) {
     index.includes(atomicProp) ? table.push(true) : table.push(false); //put the result in the truth table
@@ -16,8 +29,13 @@ export function marking(atomicProp) {
 }
 
 export function not(sub_func) {
-  let table = marking(sub_func);
+  let table = [];
   let table_not = [];
+
+  typeof sub_func == "string"
+    ? (table = marking(sub_func))
+    : (table = sub_func);
+
   for (let i = 0; i < table.length; i++) {
     table[i] === true ? table_not.push(false) : table_not.push(true);
   }
@@ -26,9 +44,13 @@ export function not(sub_func) {
 }
 
 export function and(sub_func1, sub_func2) {
-  let table1 = marking(sub_func1);
-  let table2 = marking(sub_func2);
+  let table1 = [];
+  let table2 = [];
   let table_and = [];
+
+  typeof sub_func1 == "string"
+    ? ((table1 = marking(sub_func1)), (table2 = marking(sub_func2)))
+    : ((table1 = sub_func1), (table2 = sub_func2));
 
   for (let i = 0; i < table1.length; i++) {
     table1[i] === true && table2[i] === true
@@ -40,8 +62,12 @@ export function and(sub_func1, sub_func2) {
 }
 
 export function EX(sub_func) {
-  let table = marking(sub_func);
+  let table = [];
   let table_EX = [];
+
+  typeof sub_func == "string"
+    ? (table = marking(sub_func))
+    : (table = sub_func);
 
   for (let i = 0; i < table.length; i++) {
     table_EX[i] = false;
@@ -68,14 +94,18 @@ export function EX(sub_func) {
 }
 
 export function EU(sub_func1, sub_func2) {
-  let table1 = marking(sub_func1);
-  let table2 = marking(sub_func2);
+  let table1 = [];
+  let table2 = [];
   let table_EU = [];
   let table_seen = [];
   let L = [];
   let pos_origin = 0;
   let origin,
     last = "";
+
+  typeof sub_func1 == "string"
+    ? ((table1 = marking(sub_func1)), (table2 = marking(sub_func2)))
+    : ((table1 = sub_func1), (table2 = sub_func2));
 
   for (let i = 0; i < states.length; i++) {
     table_seen[i] = false;
@@ -113,13 +143,16 @@ export function EU(sub_func1, sub_func2) {
 }
 
 export function AU(sub_func1, sub_func2) {
+  let table1 = [];
+  let table2 = [];
   let L = [];
   let nb = [];
   let table_AU = [];
   let last, pos_origin, origin;
 
-  let table1 = marking(sub_func1);
-  let table2 = marking(sub_func2);
+  typeof sub_func1 == "string"
+    ? ((table1 = marking(sub_func1)), (table2 = marking(sub_func2)))
+    : ((table1 = sub_func1), (table2 = sub_func2));
 
   for (let i = 0; i < states.length; i++) {
     table_AU[i] = false;

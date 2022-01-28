@@ -62,6 +62,27 @@ export function and(sub_func1, sub_func2) {
   return table_and;
 }
 
+export function or(sub_func1, sub_func2) {
+  let table1 = [];
+  let table2 = [];
+  let table_or = [];
+
+  typeof sub_func1 == "string"
+    ? (table1 = marking(sub_func1))
+    : (table1 = sub_func1);
+  typeof sub_func2 == "string"
+    ? (table2 = marking(sub_func2))
+    : (table2 = sub_func2);
+
+  for (let i = 0; i < table1.length; i++) {
+    table1[i] === true || table2[i] === true
+      ? table_or.push(true)
+      : table_or.push(false);
+  }
+
+  return table_or;
+}
+
 export function E(sub_func) {
   //E(G(x))
   let elements;
@@ -78,9 +99,8 @@ export function E(sub_func) {
       return EU(elements[0], elements[1]);
 
     case "F":
-      elements = sub_func.slice(2, -1).split(/,(.+)/);
-      elements.pop();
-      return EF(elements[0], elements[1]);
+      elements = sub_func.slice(2, -1);
+      return EF(elements);
 
     case "G":
       elements = sub_func.slice(2, -1).split(/,(.+)/);
@@ -138,12 +158,7 @@ export function EX(sub_func) {
     for (let pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
       if (transitions[pos_trans][0] === states[i]) {
         let state_prime = transitions[pos_trans][1];
-        let pos_state_prime = 0;
-        for (let x = 0; x < states.length; x++) {
-          if (states[x] === state_prime) {
-            pos_state_prime = x;
-          }
-        }
+        let pos_state_prime = state_pos(state_prime);
         if (table[pos_state_prime] === true) {
           table_EX[i] = true;
         }
@@ -154,7 +169,7 @@ export function EX(sub_func) {
   return table_EX;
 }
 
-export function AX(sub_func){
+export function AX(sub_func) {
   let table = [];
   let table_AX = [];
   let state_prime, pos_state_prime;
@@ -169,12 +184,7 @@ export function AX(sub_func){
     for (let pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
       if (transitions[pos_trans][0] === states[i]) {
         state_prime = transitions[pos_trans][1];
-        pos_state_prime = 0;
-        for (let x = 0; x < states.length; x++) {
-          if (states[x] === state_prime) {
-            pos_state_prime = x;
-          }
-        }
+        pos_state_prime = state_pos(state_prime);
         if (table[pos_state_prime] === false) {
           table_AX[i] = false;
         }
@@ -219,17 +229,15 @@ export function EU(sub_func1, sub_func2) {
       if (transitions[pos_trans][1] === states[last]) {
         origin = transitions[pos_trans][0];
         pos_origin = 0;
-        for (let x = 0; x < states.length; x++) {
-          if (states[x] === origin) {
-            pos_origin = x;
+        if(table_seen[pos_origin] === false){
+          pos_origin = state_pos(origin);
+          if (table_seen[pos_origin] === false) {
+            table_seen[pos_origin] = true;
+            if (table1[pos_origin] === true) {
+              L.push(pos_origin);
+            }
           }
-        }
-        if (table_seen[pos_origin] === false) {
-          table_seen[pos_origin] = true;
-          if (table1[pos_origin] === true) {
-            L.push(pos_origin);
-          }
-        }
+        } 
       }
     }
   }
@@ -276,12 +284,7 @@ export function AU(sub_func1, sub_func2) {
     for (let pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
       if (transitions[pos_trans][1] === states[last]) {
         origin = transitions[pos_trans][0];
-        pos_origin = 0;
-        for (let x = 0; x < states.length; x++) {
-          if (states[x] === origin) {
-            pos_origin = x;
-          }
-        }
+        pos_origin = state_pos(origin);
         nb[pos_origin]--;
         if (
           nb[pos_origin] === 0 &&
@@ -296,24 +299,57 @@ export function AU(sub_func1, sub_func2) {
   return table_AU;
 }
 
-export function or(sub_func1, sub_func2) {
-  let table1 = [];
-  let table2 = [];
-  let table_or = [];
+//ne retourne pas les bonnes valeurs
+export function EF(sub_func) {
+  let table = [];
+  let table_EF = [];
+  let table_seen = [];
+  let L = [];
+  let pos_origin = 0;
+  let origin,
+    last = "";
 
-  typeof sub_func1 == "string"
-    ? (table1 = marking(sub_func1))
-    : (table1 = sub_func1);
-  typeof sub_func2 == "string"
-    ? (table2 = marking(sub_func2))
-    : (table2 = sub_func2);
+  typeof sub_func == "string"
+    ? (table = marking(sub_func))
+    : (table = sub_func);
 
-  for (let i = 0; i < table1.length; i++) {
-    table1[i] === true || table2[i] === true
-      ? table_or.push(true)
-      : table_or.push(false);
+  for (let i = 0; i < states.length; i++) {
+    table_EF[i] = false;
+    table_seen[i] = false;
+    
+    //checks for any state that verifies sub_func and saves it in L
+    if (table[i] === true) {
+      L.push(i);
+    }
   }
 
-  return table_or;
+  while (L.length != 0) {
+    last = L.pop();
+    table_EF[last] = true;
+
+    for (let pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
+      if (transitions[pos_trans][1] === states[last]) {
+        origin = transitions[pos_trans][0];
+        pos_origin = state_pos(origin);
+        if (table_seen[pos_origin] === false) {
+          table_seen[pos_origin] = true;
+          if (table[pos_origin] === true) {
+            L.push(pos_origin);
+          }
+        }
+      }
+    }
+  }
+  return table_EF;
 }
 
+//returns the position of a state in the states array
+export function state_pos(name){
+  let state_position;
+  for (let x = 0; x < states.length; x++) {
+    if (states[x] === name) {
+      state_position = x;
+    }
+  }
+  return state_position;
+}

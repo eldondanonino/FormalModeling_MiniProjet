@@ -14,10 +14,10 @@ Efrei
 
 - For All   → A
 - Exists   → E
-- Next x     → EX(x) or AX(x)
-- Globally x → EG(x) or AG(x)
-- Finally x  → EF(x) or AF(x)
-- x Until y → EU(x,y) or AU(x,y)
+- Next x     → E(X(x)) or A(X(x))
+- Globally x → E(G(x)) or A(G(x))
+- Finally x  → E(F(x)) or A(F(x))
+- x Until y → E(U(x,y)) or A(U(x,y))
 
 ### Input format
 

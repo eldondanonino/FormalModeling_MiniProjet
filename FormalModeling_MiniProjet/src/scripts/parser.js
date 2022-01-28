@@ -1,6 +1,6 @@
 import { process } from "./process";
 import { display } from "./output";
-import { not, and } from "./algorithms";
+import { not, and,or } from "./algorithms";
 
 const filePath = "documents/test_files/";
 // const fileName = "file2";
@@ -61,7 +61,7 @@ export function CTLParser(input, initial) {
   console.log("input");
   console.log(input);
 
-  if (input.charAt(0).match(/!|&/)) {
+  if (input.charAt(0).match(/!|&|\|/)) {
     input.charAt(input.length - 1) == ")"
       ? (input = input.slice(0, -1))
       : console.log("error");
@@ -76,7 +76,7 @@ export function CTLParser(input, initial) {
   //we should have either finished the recursive loop or [operator,unseparated values]
 
   //if first char is algo, recursive
-  if (input[1].charAt(0).match(/!|&/)) {
+  if (input[1].charAt(0).match(/!|&|\|/)) {
     console.log("first element is logical");
     let para_counter = 1;
     for (let i = 2; i < input[1].length; i++) {
@@ -95,7 +95,7 @@ export function CTLParser(input, initial) {
     elements.pop();
   }
 
-  if (elements[1].charAt(0).match(/!|&/)) {
+  if (elements[1].charAt(0).match(/!|&|\|/)) {
     console.log("second element is logical");
     //if the second element is not a simple atomic proposition we call recursively
     elements[1] = CTLParser(elements[1], initial);
@@ -114,6 +114,10 @@ export function CTLParser(input, initial) {
       console.log("and is reached");
       result = and(elements[0], elements[1]);
       break;
+      case "|":
+        console.log("or is reached");
+        result = or(elements[0], elements[1]);
+        break;
     default:
       console.log("ko");
       break;

@@ -1,6 +1,7 @@
 import { parse, CTLParser } from "./parser";
 import { process } from "./process";
 import { BaseAlgorithms } from "./algorithmsOutput";
+import {fileSetter} from "./algorithms";
 
 let states, tuples, transitions, initial, base_algorithms, ctl;
 let algorithms;
@@ -12,6 +13,7 @@ $(document).ready(function () {
     flag = false;
   });
   $("#selectFile").on("change", function () {
+    fileSetter("./documents/test_files/" + $("#selectFile").val() + ".txt");
     atomicHandler();
     ctlHandler();
     flag = false;
@@ -46,7 +48,7 @@ $(document).ready(function () {
         tuples = processed.tuples;
         transitions = processed.transitions;
         initial = processed.initial;
-        base_algorithms = BaseAlgorithms(atom1, atom2);
+        base_algorithms = BaseAlgorithms(atom1, atom2,"./documents/test_files/" + selectedFile + ".txt");
         ctl = processed.ctl;
       } else {
         hideAllTitles();

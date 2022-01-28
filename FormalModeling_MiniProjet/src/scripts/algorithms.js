@@ -1,14 +1,26 @@
 import { parse } from "./parser";
 import { process } from "./process";
 
-let data = process(parse("./documents/test_files/file2.txt"));
-let tuples = data.tuples;
-let states = data.states;
-let transitions = data.transitions;
+let data = "";
+let tuples;
+let states;
+let transitions;
+
+export function fileSetter(file)
+{
+  console.log("data pre set");
+  console.log(data);
+  data = process(parse(file));
+  tuples = data.tuples;
+  states = data.states;
+  transitions = data.transitions;
+  console.log("data post set");
+  console.log(data);
+}
 
 export function marking(atomicProp) {
+  console.log("Marking reached!");
   let table = [];
-
   tuples.forEach(function iter(index) {
     index.includes(atomicProp) ? table.push(true) : table.push(false); //put the result in the truth table
   });

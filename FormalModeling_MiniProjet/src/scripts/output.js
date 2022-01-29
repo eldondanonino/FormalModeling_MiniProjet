@@ -1,7 +1,7 @@
 import { parse, CTLParser } from "./parser";
 import { process } from "./process";
 import { BaseAlgorithms } from "./algorithmsOutput";
-import {fileSetter} from "./algorithms";
+import { fileSetter } from "./algorithms";
 
 let states, tuples, transitions, initial, base_algorithms, ctl;
 let algorithms;
@@ -9,9 +9,17 @@ let flag = false; // On file selection change: set to false
 
 /// Listen for user input
 $(document).ready(function () {
+
+  $("#bt-check-all-cb").on("click", function () {
+    $("*[id*=cb-]").prop("checked", true);
+    atomicHandler();
+  });
+
+/// Listen for changes on checkboxs
   $("*[id*=cb-]").on("change", function () {
     flag = false;
   });
+
   $("#selectFile").on("change", function () {
     fileSetter("./documents/test_files/" + $("#selectFile").val() + ".txt");
     atomicHandler();
@@ -28,6 +36,7 @@ $(document).ready(function () {
     customCtlHandler();
   });
 
+  /// Listen for launch button to be pressed
   $("#selectFile-validate").on("click", function () {
     let selectedFile = $("#selectFile").val();
 
@@ -48,7 +57,11 @@ $(document).ready(function () {
         tuples = processed.tuples;
         transitions = processed.transitions;
         initial = processed.initial;
-        base_algorithms = BaseAlgorithms(atom1, atom2,"./documents/test_files/" + selectedFile + ".txt");
+        base_algorithms = BaseAlgorithms(
+          atom1,
+          atom2,
+          "./documents/test_files/" + selectedFile + ".txt"
+        );
         ctl = processed.ctl;
       } else {
         hideAllTitles();
@@ -184,6 +197,7 @@ function hideAllTitles() {
   $("#initial-states").attr("hidden", true);
   $("#algorithms").attr("hidden", true);
   $("#ctl").attr("hidden", true);
+  $("#custom-ctl-output").attr("hidden", true);
 }
 
 function atomicHandler() {
@@ -238,9 +252,18 @@ function ctlHandler() {
 
 function customCtlHandler() {
   // let a = "A(&(!(U(p,q)),E(&(p,q))))"
-  let a = CTLParser($("#custom-ctl").val());  //maybe put .tostring()
-  a[1] //change this to ini state
-    ? alert("your ctl returns true!")
-    : alert("your ctl returns false!");
+  let a = CTLParser($("#custom-ctl").val()); //maybe put .tostring()
+
+  // a[1] //change this to ini state
+  //   ? alert("your ctl returns true!")
+  //   : alert("your ctl returns false!");
+  if (a[1]) {
+    $("#custom-ctl-output").empty() // Remove all child
+    $("#custom-ctl-output").append(`<p class="node">your custom ctl returns true!</p>`);
+  } else {
+    $("#custom-ctl-output").empty() // Remove all child
+    $("#custom-ctl-output").append(`<p class="node">your custom ctl returns false!</p>`);
+  }
+
   $("#custom-ctl").val("");
 }

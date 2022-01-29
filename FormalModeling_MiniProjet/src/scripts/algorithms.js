@@ -91,7 +91,7 @@ export function E(sub_func) {
     case "X":
       elements = sub_func.slice(2, -1).split(/,(.+)/);
       elements.pop();
-      return EX(elements[0], elements[1]);
+      return EX(elements);
 
     case "U":
       elements = sub_func.slice(2, -1).split(/,(.+)/);
@@ -105,7 +105,7 @@ export function E(sub_func) {
     case "G":
       elements = sub_func.slice(2, -1).split(/,(.+)/);
       elements.pop();
-      return EG(elements[0], elements[1]);
+      return EG(elements);
 
     default:
       break;
@@ -120,7 +120,7 @@ export function A(sub_func) {
     case "X":
       elements = sub_func.slice(2, -1).split(/,(.+)/);
       elements.pop();
-      return AX(elements[0], elements[1]);
+      return AX(elements);
 
     case "U":
       elements = sub_func.slice(2, -1).split(/,(.+)/);
@@ -130,12 +130,12 @@ export function A(sub_func) {
     case "F":
       elements = sub_func.slice(2, -1).split(/,(.+)/);
       elements.pop();
-      return AF(elements[0], elements[1]);
+      return AF(elements);
 
     case "G":
       elements = sub_func.slice(2, -1).split(/,(.+)/);
       elements.pop();
-      return AG(elements[0], elements[1]);
+      return AG(elements);
 
     default:
       break;
@@ -294,7 +294,6 @@ export function AU(sub_func1, sub_func2) {
   return table_AU;
 }
 
-//ne retourne pas les bonnes valeurs
 export function EF(sub_func) {
   let table = [];
   let table_EF = [];
@@ -334,6 +333,7 @@ export function EF(sub_func) {
   return table_EF;
 }
 
+//ne retourne pas les bonnes valeurs
 export function AF(sub_func) {
   let table = [];
   let table_AF = [];
@@ -359,7 +359,22 @@ export function AF(sub_func) {
   while (L.length != 0) {
     last = L.pop();
     table_AF[last] = true;
+
+    for (let pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
+      if (transitions[pos_trans][1] === states[last]) {
+        origin = transitions[pos_trans][0];
+        pos_origin = state_pos(origin);
+        nb[pos_origin]--;
+        if (
+          nb[pos_origin] === 0 &&
+          table_AF[pos_origin] === false
+        ) {
+          L.push(pos_origin);
+        }
+      }
+    }
   }
+  return table_AF;
 }
 
 //returns the position of a state in the states array

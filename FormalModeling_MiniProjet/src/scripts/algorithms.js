@@ -333,9 +333,7 @@ export function EF(sub_func) {
         pos_origin = state_pos(origin);
         if (table_seen[pos_origin] === false) {
           table_seen[pos_origin] = true;
-          if (table[pos_origin] === true) {
-            L.push(pos_origin);
-          }
+          L.push(pos_origin);
         }
       }
     }

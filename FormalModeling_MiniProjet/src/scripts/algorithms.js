@@ -229,7 +229,7 @@ export function EU(sub_func1, sub_func2) {
       if (transitions[pos_trans][1] === states[last]) {
         origin = transitions[pos_trans][0];
         pos_origin = 0;
-        if(table_seen[pos_origin] === false){
+        if (table_seen[pos_origin] === false) {
           pos_origin = state_pos(origin);
           if (table_seen[pos_origin] === false) {
             table_seen[pos_origin] = true;
@@ -237,7 +237,7 @@ export function EU(sub_func1, sub_func2) {
               L.push(pos_origin);
             }
           }
-        } 
+        }
       }
     }
   }
@@ -259,15 +259,10 @@ export function AU(sub_func1, sub_func2) {
     ? (table2 = marking(sub_func2))
     : (table2 = sub_func2);
 
+  nb = count_outgoing_trans();
+
   for (let i = 0; i < states.length; i++) {
     table_AU[i] = false;
-    nb[i] = 0;
-    //counts the number of outgoing transitions for every state
-    for (let x = 0; x < transitions.length; x++) {
-      if (transitions[x] === states[i]) {
-        nb[i] += 1;
-      }
-    }
   }
 
   //checks for any state that verifies sub_func2 and saves it in L
@@ -305,9 +300,7 @@ export function EF(sub_func) {
   let table_EF = [];
   let table_seen = [];
   let L = [];
-  let pos_origin = 0;
-  let origin,
-    last = "";
+  let pos_origin, origin, last;
 
   typeof sub_func == "string"
     ? (table = marking(sub_func))
@@ -316,7 +309,7 @@ export function EF(sub_func) {
   for (let i = 0; i < states.length; i++) {
     table_EF[i] = false;
     table_seen[i] = false;
-    
+
     //checks for any state that verifies sub_func and saves it in L
     if (table[i] === true) {
       L.push(i);
@@ -341,8 +334,36 @@ export function EF(sub_func) {
   return table_EF;
 }
 
+export function AF(sub_func) {
+  let table = [];
+  let table_AF = [];
+  let nb = [];
+  let L = [];
+  let pos_origin, origin, last;
+
+  typeof sub_func == "string"
+    ? (table = marking(sub_func))
+    : (table = sub_func);
+
+  nb = count_outgoing_trans();
+
+  for (let i = 0; i < states.length; i++) {
+    table_AF[i] = false;
+
+    //checks for any state that verifies sub_func and saves it in L
+    if (table[i] === true) {
+      L.push(i);
+    }
+  }
+
+  while (L.length != 0) {
+    last = L.pop();
+    table_AF[last] = true;
+  }
+}
+
 //returns the position of a state in the states array
-export function state_pos(name){
+export function state_pos(name) {
   let state_position;
   for (let x = 0; x < states.length; x++) {
     if (states[x] === name) {
@@ -350,4 +371,21 @@ export function state_pos(name){
     }
   }
   return state_position;
+}
+
+export function count_outgoing_trans() {
+  let nb = [];
+
+  for (let i = 0; i < states.length; i++) {
+    nb[i] = 0;
+
+    //counts the number of outgoing transitions for every state
+    for (let x = 0; x < transitions.length; x++) {
+      if (transitions[x][0] === states[i]) {
+        nb[i] += 1;
+      }
+    }
+  }
+
+  return nb;
 }

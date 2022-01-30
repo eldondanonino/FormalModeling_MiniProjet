@@ -9,15 +9,26 @@ let flag = false; // On file selection change: set to false
 
 /// Listen for user input
 $(document).ready(function () {
-
   $("#bt-check-all-cb").on("click", function () {
-    $("*[id*=cb-]").prop("checked", true);
+    /// Check if all checkboxes are in the same status of selection
+    let bool;
+
+    $("#selectFile-form :checkbox:checked").length == 0
+      ? ($("#bt-check-all-cb").text("Uncheck all checkboxes"), (bool = true)) /// If none checked, toggle all checkboxes to true
+      : ($("#bt-check-all-cb").text("Check all checkboxes"), (bool = false)); /// If one checked, toggle all checkboxes to false
+    $("#selectFile-form :checkbox").prop("checked", bool);
+
+    /// In any case, launch atomic handler
     atomicHandler();
   });
 
-/// Listen for changes on checkboxs
+  /// Listen for changes on checkboxes
   $("*[id*=cb-]").on("change", function () {
     flag = false;
+
+    $("#selectFile-form :checkbox:checked").length == 0
+      ? $("#bt-check-all-cb").text("Check all checkboxes")
+      : $("#bt-check-all-cb").text("Uncheck all checkboxes")
   });
 
   $("#selectFile").on("change", function () {
@@ -258,11 +269,15 @@ function customCtlHandler() {
   //   ? alert("your ctl returns true!")
   //   : alert("your ctl returns false!");
   if (a[1]) {
-    $("#custom-ctl-output").empty() // Remove all child
-    $("#custom-ctl-output").append(`<p class="node">your custom ctl returns true!</p>`);
+    $("#custom-ctl-output").empty(); // Remove all child
+    $("#custom-ctl-output").append(
+      `<p class="node">your custom ctl returns true!</p>`
+    );
   } else {
-    $("#custom-ctl-output").empty() // Remove all child
-    $("#custom-ctl-output").append(`<p class="node">your custom ctl returns false!</p>`);
+    $("#custom-ctl-output").empty(); // Remove all child
+    $("#custom-ctl-output").append(
+      `<p class="node">your custom ctl returns false!</p>`
+    );
   }
 
   $("#custom-ctl").val("");

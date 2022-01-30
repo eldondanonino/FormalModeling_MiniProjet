@@ -1,6 +1,6 @@
 import { process } from "./process";
 import { display } from "./output";
-import { not, and, or } from "./algorithms";
+import { not, and, or, AX, AU, AF, AG, EX, EU, EF, EG } from "./algorithms";
 
 const filePath = "documents/test_files/";
 // const fileName = "file2";
@@ -56,9 +56,12 @@ export function CTLParser(input) {
   let result;
   let operator;
   let elements = [];
-  let reg_all = /!|&|\||A|E/;
-  let reg_double = /&|\|/;
+
+  let reg_all = /!|&|\||A|E|T/;
+  let reg_double = /&|\||T|AU|EU/;
   let reg_simple = /!|A|E/;
+  let reg_AE = /X|G|F|U/;
+
   let flag = false;
   input.trim();
 
@@ -73,21 +76,39 @@ export function CTLParser(input) {
     throw "Not a logical formula, please check you ctl";
     //no algorithm needed, end of recursion
   }
-  if (flag) {
-    throw "Your CTL does not have proper parenthesis placement";
-  }
+  if (flag) throw "Your CTL does not have proper parenthesis placement";
+
   input = input.split(/\((.+)/);
   operator = input[0];
   input.pop();
-  //input =  [operator,unseparated values]
 
-  //
-  // UNTIL HERE EVERYTHING IS FINE
-  //
   //handle an operation
   if (operator.match(reg_all)) {
-    //element 1 is an operation
-    if (input[1].charAt(0).match(reg_all)) {
+    if (operator.match(/A|E/)) {
+      //handle A and E
+      if (!input[1].charAt(0).match(reg_AE)) {
+        throw "Please make sure that A and E are only applied on X G F or U";
+      } else {
+        //change the operator to the composite form
+        operator = operator + input[1].charAt(0);
+        input[1] = input[1].slice(2, -1);
+        if ((operator == "AU") | (operator == "EU")) {
+          if (input[1].charAt(0).match(reg_all)) {
+            elements = first_spliter(input);
+            console.log(elements);
+            elements[0] = CTLParser(elements[0]);
+          } else {
+            elements = input[1].split(/,(.+)/);
+          }
+        } else if (input[1].charAt(0).match(reg_all)) {
+          elements[0] = CTLParser(input[1]);
+        } else {
+          elements[0] = input[1];
+        }
+      }
+    } else if (input[1].charAt(0).match(reg_all)) {
+      //element 1 is an operation
+
       // console.log("splitting " + input[1] + " for operator " + operator);
       elements = first_spliter(input);
       console.log("elements");
@@ -96,10 +117,10 @@ export function CTLParser(input) {
     }
     //element 1 is a simple atomic proposition
     else {
-      console.log("no operation");
       elements = input[1].split(/,(.+)/);
-      if (operator != "!") elements.pop();
+      if (!operator.match(reg_simple)) elements.pop();
     }
+
     //if the operation has a second element
     if (operator.match(reg_double)) {
       //element 2 is an operation
@@ -108,9 +129,9 @@ export function CTLParser(input) {
       }
     }
   } else {
-    throw "not a valid operation, check your ctl";
+    throw "Not a valid operation, please check your ctl";
   }
-
+  console.log(elements);
   switch (operator) {
     case "!":
       console.log("not is reached");
@@ -124,9 +145,44 @@ export function CTLParser(input) {
       console.log("or is reached");
       result = or(elements[0], elements[1]);
       break;
-    default:
-      console.log("ko");
+    // case "T":
+    //   console.log("next is reached");
+    //   result = T(elements[0], elements[1]);
+    //   break;
+    case "AX":
+      console.log("AX is reached");
+      result = AX(elements[0]);
       break;
+    case "AU":
+      console.log("AU is reached");
+      result = AU(elements[0], elements[1]);
+      break;
+    case "AF":
+      console.log("AF is reached");
+      result = AF(elements[0]);
+      break;
+    case "AG":
+      console.log("AG is reached");
+      result = AG(elements[0]);
+      break;
+    case "EX":
+      console.log("EX is reached");
+      result = EX(elements[0]);
+      break;
+    case "EU":
+      console.log("EU is reached");
+      result = EU(elements[0], elements[1]);
+      break;
+    case "EF":
+      console.log("EF is reached");
+      result = EF(elements[0]);
+      break;
+    case "EG":
+      console.log("EG is reached");
+      result = EG(elements[0]);
+      break;
+    default:
+      throw "Something went wrong (failed switch)";
   }
   Array.isArray(result) ? (result = result) : console.log("not an array");
   console.log("result: " + result);

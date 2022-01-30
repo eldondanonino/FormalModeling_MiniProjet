@@ -315,6 +315,7 @@ export function AF(sub_func) {
   return table_AF;
 }
 
+// EG = après n transitions quelconques, il existe une série de transitions vérifiant sub_func à chaque état
 export function EG(sub_func) {
   let table = marking_setter(sub_func);
   let table_EG = [];
@@ -322,8 +323,19 @@ export function EG(sub_func) {
   let L = L_setter(sub_func);
   let pos_origin, origin, last;
 
+  for (let i = 0; i < states.length; i++) {
+    table_EF[i] = false;
+    table_seen[i] = false;
+  }
 
-  return false;
+  for (let i = 0; i < states.length; i++) {
+    for (let pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
+      if (transitions[pos_trans][0] === states[i]) {
+      }
+    }
+  }
+
+  return table_EG;
 }
 
 //returns the position of a state in the states array
@@ -376,4 +388,62 @@ export function marking_setter(sub_func) {
     : (table = sub_func);
 
   return table;
+}
+
+export function state_explorer(origin, sub_func) {
+  let atom_props = [];
+  let validating_states = [];
+  let table_seen = [];
+  let receiving_state, already_checked;
+
+  for (let pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
+    if (transitions[pos_trans][0] === states[origin]) {
+      receiving_state = transitions[pos_trans][1];
+      already_checked = checker_seen(table_seen, receiving_state);
+      if (already_checked === false) {
+        atom_props = find_atom_props(receiving_state);
+        if (atom_props != "~") {
+          for (let i = 0; i < atom_props.length; i++) {
+            if (atom_props[i] === sub_func) {
+              validating_states.push(receiving_state);
+            }
+          }
+        }
+      }
+      console.log("validating_states:");
+      console.log(validating_states);
+      console.log("receiving_state");
+      console.log(receiving_state);
+      console.log("calling recursive");
+      validating_states.concat(state_explorer(receiving_state, sub_func));
+    }
+  }
+  return validating_states;
+}
+
+export function find_atom_props(state) {
+  let res_table = [];
+  for (let i = 0; i < tuples.length; i++) {
+    if (tuples[i][0] == state) {
+      for (let x = 1; x < tuples[i].length; x++) {
+        res_table.push(tuples[i][x]);
+      }
+    }
+  }
+  if (res_table.length == 0) {
+    return "~";
+  } else {
+    return res_table;
+  }
+}
+
+export function checker_seen(table_seen, receiving_state) {
+  for (let x = 0; x < table_seen.length; x++) {
+    if (table_seen[x] === receiving_state) {
+      console.log("true");
+      return true;
+    }
+  }
+  console.log("false");
+  return false;
 }

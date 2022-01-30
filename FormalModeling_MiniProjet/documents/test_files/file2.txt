@@ -7,4 +7,4 @@ T:
 I:
 {S1}
 CTL:
-EXISTS(Xp)
+&(p,q)

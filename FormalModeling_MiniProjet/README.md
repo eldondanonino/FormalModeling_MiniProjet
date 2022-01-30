@@ -1,22 +1,27 @@
 # FormalModeling_MiniProjet
 
-M2 Formal Modeling project by Quentin FELTEN, Remy CHERKHAOUI and Daniil ROSSO
-Efrei
+M2 Formal Modeling project by Quentin FELTEN, Remy CHERKHAOUI and Daniil ROSSO,
+students at Efrei Paris
+
+In this project, we designed an application running a Computation Tree Logic (or CTL for short) algorithm to check if a given Kripke structure satisfies a given CTL formula. 
+
+## Running the application
 
 ### Logical Symbol interpretation for the input file
 
-- NOT → !(x)
+- NOT     → !(x)
 - x AND y → &(x,y)
-- x OR y → |(x,y)
+- x OR y  → |(x,y)
+-x THEN y → T(x,y)
 
 ### Glossary
 
-- For All x   → A(x)
-- Exists x   → E(x)
-- Next x     → X(x)
-- Globally x → G(x)
-- Finally x  → F(x)
-- x Until y → U(x,y)
+- For All    → A
+- Exists     → E
+- Next x     → E(X(x)) or A(X(x))
+- Globally x → E(G(x)) or A(G(x))
+- Finally x  → E(F(x)) or A(F(x))
+- x Until y  → E(U(x,y)) or A(U(x,y))
 
 ### Input format
 
@@ -31,7 +36,8 @@ Efrei
 
 ### Example
 
-_This example is illustrated by the image 'KripkeStructureExample.png'_
+_This example is illustrated by the image 'file1.png'
+This file can be founed in the 'documents\test_files' folder._
 
 List of states **S**:
 
@@ -48,3 +54,4 @@ List of transitions **T**:
 Initial state **I**:
 
 `{S1}`
+

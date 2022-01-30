@@ -28,7 +28,7 @@ $(document).ready(function () {
 
     $("#selectFile-form :checkbox:checked").length == 0
       ? $("#bt-check-all-cb").text("Check all checkboxes")
-      : $("#bt-check-all-cb").text("Uncheck all checkboxes")
+      : $("#bt-check-all-cb").text("Uncheck all checkboxes");
   });
 
   $("#selectFile").on("change", function () {
@@ -44,7 +44,7 @@ $(document).ready(function () {
     atomicHandler();
   });
   $("#custom-ctl-btn").on("click", function () {
-    customCtlHandler();
+    customCtlHandler(initial, states);
   });
 
   /// Listen for launch button to be pressed
@@ -83,7 +83,7 @@ $(document).ready(function () {
       if ($("#cb-transitions")[0].checked === true) displayTransitions();
       if ($("#cb-initial-states")[0].checked === true) displayInitialStates();
       if ($("#cb-algorithms")[0].checked === true) {
-        displayCTL();
+        displayCTL(initial, states, ctl);
         displayAlgorithms(base_algorithms);
       }
     }
@@ -171,14 +171,24 @@ function displayAlgorithms(base_algorithms) {
   });
 }
 
-function displayCTL() {
-  let checkedCTL = "NOT IMPLEMENTED YET"; /* checkCTL(); */
-  //TODO: create and import checkCTL()
+function displayCTL(initial_state, states, ctl) {
+  let checkedCTL = CTLParser(ctl);
+  let initial_state_position = states.indexOf(initial_state[0]);
+  let ctl_output = checkedCTL[initial_state_position];
+  let color = "";
+
+  ctl_output ? (color = "green") : (color = "red");
+
+  //TODO: case->multiple initial sates, use a forEach
 
   $("#ctl").removeAttr("hidden");
   $("#ctl").addClass("node");
 
-  $("#ctl").append(`<p class="node">${ctl} = ${checkedCTL}</p>`);
+  $("#ctl").append(
+    `<p class="node">From ${$(
+      "#selectFile"
+    ).val()}'s CTL: &nbsp &nbsp ${ctl} = <span style="color:${color}">${ctl_output}</span></p>`
+  );
 }
 
 function hideUncheckedTitles() {
@@ -261,24 +271,18 @@ function ctlHandler() {
       $("#custom-ctl").removeAttr("hidden"));
 }
 
-function customCtlHandler() {
+function customCtlHandler(initial_states, states) {
   // let a = "A(&(!(U(p,q)),E(&(p,q))))"
-  let a = CTLParser($("#custom-ctl").val()); //maybe put .tostring()
+  let initial_state_position = states.indexOf(initial_states[0]);
+  let bool = CTLParser($("#custom-ctl").val())[initial_state_position]; //maybe put .tostring()
+  let color;
 
-  // a[1] //change this to ini state
-  //   ? alert("your ctl returns true!")
-  //   : alert("your ctl returns false!");
-  if (a[1]) {
-    $("#custom-ctl-output").empty(); // Remove all child
-    $("#custom-ctl-output").append(
-      `<p class="node">your custom ctl returns true!</p>`
-    );
-  } else {
-    $("#custom-ctl-output").empty(); // Remove all child
-    $("#custom-ctl-output").append(
-      `<p class="node">your custom ctl returns false!</p>`
-    );
-  }
+  bool ? (color = "green") : (color = "red");
 
-  $("#custom-ctl").val("");
+  // TODO: same plz <3
+
+  $("#custom-ctl-output").empty(); // Remove all child
+  $("#custom-ctl-output").append(
+    `<p class="node">From custom CTL: &nbsp &nbsp ${$("#custom-ctl").val()} = <span style="color:${color}">${bool}</span></p>`
+  );
 }

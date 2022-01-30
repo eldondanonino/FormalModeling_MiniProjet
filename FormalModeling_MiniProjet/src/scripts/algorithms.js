@@ -27,12 +27,8 @@ export function marking(atomicProp) {
 }
 
 export function not(sub_func) {
-  let table = [];
+  let table = marking_setter(sub_func);
   let table_not = [];
-
-  typeof sub_func == "string"
-    ? (table = marking(sub_func))
-    : (table = sub_func);
 
   for (let i = 0; i < table.length; i++) {
     table[i] === true ? table_not.push(false) : table_not.push(true);
@@ -42,16 +38,9 @@ export function not(sub_func) {
 }
 
 export function and(sub_func1, sub_func2) {
-  let table1 = [];
-  let table2 = [];
+  let table1 = marking_setter(sub_func1);
+  let table2 = marking_setter(sub_func2);
   let table_and = [];
-
-  typeof sub_func1 == "string"
-    ? (table1 = marking(sub_func1))
-    : (table1 = sub_func1);
-  typeof sub_func2 == "string"
-    ? (table2 = marking(sub_func2))
-    : (table2 = sub_func2);
 
   for (let i = 0; i < table1.length; i++) {
     table1[i] === true && table2[i] === true
@@ -63,16 +52,9 @@ export function and(sub_func1, sub_func2) {
 }
 
 export function or(sub_func1, sub_func2) {
-  let table1 = [];
-  let table2 = [];
+  let table1 = marking_setter(sub_func1);
+  let table2 = marking_setter(sub_func2);
   let table_or = [];
-
-  typeof sub_func1 == "string"
-    ? (table1 = marking(sub_func1))
-    : (table1 = sub_func1);
-  typeof sub_func2 == "string"
-    ? (table2 = marking(sub_func2))
-    : (table2 = sub_func2);
 
   for (let i = 0; i < table1.length; i++) {
     table1[i] === true || table2[i] === true
@@ -118,8 +100,7 @@ export function A(sub_func) {
 
   switch (sub_func.charAt(0)) {
     case "X":
-      elements = sub_func.slice(2, -1).split(/,(.+)/);
-      elements.pop();
+      elements = sub_func.slice(2, -1);
       return AX(elements);
 
     case "U":
@@ -128,13 +109,11 @@ export function A(sub_func) {
       return AU(elements[0], elements[1]);
 
     case "F":
-      elements = sub_func.slice(2, -1).split(/,(.+)/);
-      elements.pop();
+      elements = sub_func.slice(2, -1);
       return AF(elements);
 
     case "G":
-      elements = sub_func.slice(2, -1).split(/,(.+)/);
-      elements.pop();
+      elements = sub_func.slice(2, -1);
       return AG(elements);
 
     default:
@@ -143,12 +122,8 @@ export function A(sub_func) {
 }
 
 export function EX(sub_func) {
-  let table = [];
+  let table = marking_setter(sub_func);
   let table_EX = [];
-
-  typeof sub_func == "string"
-    ? (table = marking(sub_func))
-    : (table = sub_func);
 
   for (let i = 0; i < table.length; i++) {
     table_EX[i] = false;
@@ -170,13 +145,9 @@ export function EX(sub_func) {
 }
 
 export function AX(sub_func) {
-  let table = [];
+  let table = marking_setter(sub_func);
   let table_AX = [];
   let state_prime, pos_state_prime;
-
-  typeof sub_func == "string"
-    ? (table = marking(sub_func))
-    : (table = sub_func);
 
   for (let i = 0; i < states.length; i++) {
     table_AX[i] = true;
@@ -195,33 +166,20 @@ export function AX(sub_func) {
 }
 
 export function EU(sub_func1, sub_func2) {
-  let table1 = [];
-  let table2 = [];
+  let table1 = marking_setter(sub_func1);
+  let table2 = marking_setter(sub_func2);
   let table_EU = [];
   let table_seen = [];
-  let L = [];
+  let L = L_setter(sub_func2);
   let pos_origin = 0;
   let origin,
     last = "";
-
-  typeof sub_func1 == "string"
-    ? (table1 = marking(sub_func1))
-    : (table1 = sub_func1);
-  typeof sub_func2 == "string"
-    ? (table2 = marking(sub_func2))
-    : (table2 = sub_func2);
 
   for (let i = 0; i < states.length; i++) {
     table_seen[i] = false;
     table_EU[i] = false;
   }
 
-  //checks for any state that verifies sub_func2 and saves it in L
-  for (let i = 0; i < states.length; i++) {
-    if (table2[i] === true) {
-      L.push(i);
-    }
-  }
   while (L.length != 0) {
     last = L.pop();
     table_EU[last] = true;
@@ -245,9 +203,9 @@ export function EU(sub_func1, sub_func2) {
 }
 
 export function AU(sub_func1, sub_func2) {
-  let table1 = [];
-  let table2 = [];
-  let L = [];
+  let table1 = marking_setter(sub_func1);
+  let table2 = marking_setter(sub_func2);
+  let L = L_setter(sub_func2);
   let nb = [];
   let table_AU = [];
   let last, pos_origin, origin;
@@ -263,13 +221,6 @@ export function AU(sub_func1, sub_func2) {
 
   for (let i = 0; i < states.length; i++) {
     table_AU[i] = false;
-  }
-
-  //checks for any state that verifies sub_func2 and saves it in L
-  for (let i = 0; i < states.length; i++) {
-    if (table2[i] === true) {
-      L.push(i);
-    }
   }
 
   while (L.length != 0) {
@@ -295,24 +246,14 @@ export function AU(sub_func1, sub_func2) {
 }
 
 export function EF(sub_func) {
-  let table = [];
   let table_EF = [];
   let table_seen = [];
-  let L = [];
+  let L = L_setter(sub_func);
   let pos_origin, origin, last;
-
-  typeof sub_func == "string"
-    ? (table = marking(sub_func))
-    : (table = sub_func);
 
   for (let i = 0; i < states.length; i++) {
     table_EF[i] = false;
     table_seen[i] = false;
-
-    //checks for any state that verifies sub_func and saves it in L
-    if (table[i] === true) {
-      L.push(i);
-    }
   }
 
   while (L.length != 0) {
@@ -365,10 +306,7 @@ export function AF(sub_func) {
         origin = transitions[pos_trans][0];
         pos_origin = state_pos(origin);
         nb[pos_origin]--;
-        if (
-          nb[pos_origin] === 0 &&
-          table_AF[pos_origin] === false
-        ) {
+        if (nb[pos_origin] === 0 && table_AF[pos_origin] === false) {
           L.push(pos_origin);
         }
       }
@@ -377,12 +315,24 @@ export function AF(sub_func) {
   return table_AF;
 }
 
+export function EG(sub_func) {
+  let table = marking_setter(sub_func);
+  let table_EG = [];
+  let table_seen = [];
+  let L = L_setter(sub_func);
+  let pos_origin, origin, last;
+
+
+  return false;
+}
+
 //returns the position of a state in the states array
 export function state_pos(name) {
   let state_position;
   for (let x = 0; x < states.length; x++) {
     if (states[x] === name) {
       state_position = x;
+      break;
     }
   }
   return state_position;
@@ -403,4 +353,27 @@ export function count_outgoing_trans() {
   }
 
   return nb;
+}
+
+//checks for any state that verifies sub_func and saves it in the array L
+export function L_setter(sub_func) {
+  let L = [];
+  for (let i = 0; i < states.length; i++) {
+    let table = marking(sub_func);
+
+    if (table[i] === true) {
+      L.push(i);
+    }
+  }
+  return L;
+}
+
+export function marking_setter(sub_func) {
+  let table = [];
+
+  typeof sub_func == "string"
+    ? (table = marking(sub_func))
+    : (table = sub_func);
+
+  return table;
 }

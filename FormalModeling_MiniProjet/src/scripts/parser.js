@@ -1,6 +1,6 @@
 import { process } from "./process";
 import { display } from "./output";
-import { not, and, or, E, A } from "./algorithms";
+import { not, and, or } from "./algorithms";
 
 const filePath = "documents/test_files/";
 // const fileName = "file2";
@@ -55,68 +55,61 @@ export function CTLParser(input) {
   let index;
   let result;
   let operator;
-  let flag = false;
   let elements = [];
-  let reg = /!|&|\||A|E|T/;
+  let reg_all = /!|&|\||A|E/;
+  let reg_double = /&|\|/;
+  let reg_simple = /!|A|E/;
+  let flag = false;
   input.trim();
 
   console.log("input");
   console.log(input);
 
-  if (input.charAt(0).match(reg)) {
+  if (input.charAt(0).match(reg_all)) {
     input.charAt(input.length - 1) == ")"
       ? (input = input.slice(0, -1))
       : (flag = true);
-    input = input.split(/\((.+)/);
-    operator = input[0];
-    input.pop();
   } else {
-    return input;
+    throw "Not a logical formula, please check you ctl";
+    //no algorithm needed, end of recursion
   }
-  console.log("input : ");
-  console.log(input);
-  //we should have either finished the recursive loop or [operator,unseparated values]
+  if (flag) {
+    throw "Your CTL does not have proper parenthesis placement";
+  }
+  input = input.split(/\((.+)/);
+  operator = input[0];
+  input.pop();
+  //input =  [operator,unseparated values]
 
-  //double element logical operator
-
-  if (operator.match(/&|\||T/)) {
-    console.log("first element is logical");
-    let para_counter = 1;
-    for (let i = 2; i < input[1].length; i++) {
-      if (input[1].charAt(i) == "(") para_counter++;
-      if (input[1].charAt(i) == ")") para_counter--;
-      if (para_counter == 0) {
-        index = i + 1; //the index at which to split
-        break;
-      }
-    }
-    elements = split_at_index(input[1], index);
-    elements[0] = CTLParser(elements[0]);
-    if (elements[1].charAt(0).match(/&|\|/)) {
-      console.log("second element is logical");
-      //if the second element is not a simple atomic proposition we call recursively
-      elements[1] = CTLParser(elements[1]);
-    }
-    elements = input[1].split(/,(.+)/);
-    elements.pop();
-  } else if (operator.match(/!|E|A/)) {
-    //single element logical operation, no need for a second one
-    elements[0] = input[1];
-    if (elements[0].charAt(0).match(reg)) {
+  //
+  // UNTIL HERE EVERYTHING IS FINE
+  //
+  //handle an operation
+  if (operator.match(reg_all)) {
+    //element 1 is an operation
+    if (input[1].charAt(0).match(reg_all)) {
+      // console.log("splitting " + input[1] + " for operator " + operator);
+      elements = first_spliter(input);
+      console.log("elements");
+      console.log(elements);
       elements[0] = CTLParser(elements[0]);
     }
-    if ((operator == "A") | (operator == "E")) {
-      //do the sub operation check
-      console.log("algo composé détecté ");
+    //element 1 is a simple atomic proposition
+    else {
+      console.log("no operation");
+      elements = input[1].split(/,(.+)/);
+      if (operator != "!") elements.pop();
+    }
+    //if the operation has a second element
+    if (operator.match(reg_double)) {
+      //element 2 is an operation
+      if (elements[1].charAt(0).match(reg_all)) {
+        elements[1] = CTLParser(elements[1]);
+      }
     }
   } else {
-    flag = true;
+    throw "not a valid operation, check your ctl";
   }
-
-  console.log("operator : " + operator);
-  console.log("elements : ");
-  console.log(elements);
-  flag ? (operator = "error") : true;
 
   switch (operator) {
     case "!":
@@ -131,20 +124,6 @@ export function CTLParser(input) {
       console.log("or is reached");
       result = or(elements[0], elements[1]);
       break;
-    // case "T":
-    //   console.log("then is reached");
-    //   result = T(elements[0], elements[1]);
-    //   break;
-    case "A":
-      console.log("A is reached");
-      result = A(elements[0]);
-      break;
-    case "E":
-      console.log("E is reached");
-      result = E(elements[0]);
-      break;
-    case "error":
-      throw "your CTL is not properly formatted";
     default:
       console.log("ko");
       break;
@@ -152,4 +131,19 @@ export function CTLParser(input) {
   Array.isArray(result) ? (result = result) : console.log("not an array");
   console.log("result: " + result);
   return result; //return the tableoftruth
+}
+
+//splits the left hand element of a two elements operation
+function first_spliter(input) {
+  let para_counter = 1;
+  let index;
+  for (let i = 2; i < input[1].length; i++) {
+    if (input[1].charAt(i) == "(") para_counter++;
+    if (input[1].charAt(i) == ")") para_counter--;
+    if (para_counter == 0) {
+      index = i + 1; //the index at which to split
+      break;
+    }
+  }
+  return split_at_index(input[1], index);
 }

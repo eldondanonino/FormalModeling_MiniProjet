@@ -9,14 +9,21 @@ let flag = false; // On file selection change: set to false
 
 /// Listen for user input
 $(document).ready(function () {
+  $("*[id*=cb-]").attr("disabled", true);
+
   $("#bt-check-all-cb").on("click", function () {
     /// Check if all checkboxes are in the same status of selection
     let bool;
 
     $("#selectFile-form :checkbox:checked").length == 0
-      ? ($("#bt-check-all-cb").text("Uncheck all checkboxes"), (bool = true)) /// If none checked, toggle all checkboxes to true
-      : ($("#bt-check-all-cb").text("Check all checkboxes"), (bool = false)); /// If one checked, toggle all checkboxes to false
+      ? /// If none checked, toggle all checkboxes to true
+        ($("#bt-check-all-cb").text("Uncheck all checkboxes"),
+        (bool = true))
+      : /// If one checked, toggle all checkboxes to false
+        ($("#bt-check-all-cb").text("Check all checkboxes"),
+        (bool = false));
     $("#selectFile-form :checkbox").prop("checked", bool);
+    $("#selectFile-validate").prop("disabled", !bool);
 
     /// In any case, launch atomic handler
     atomicHandler();
@@ -26,15 +33,26 @@ $(document).ready(function () {
   $("*[id*=cb-]").on("change", function () {
     flag = false;
 
-    $("#selectFile-form :checkbox:checked").length == 0
-      ? $("#bt-check-all-cb").text("Check all checkboxes")
-      : $("#bt-check-all-cb").text("Uncheck all checkboxes");
+    if ($("#selectFile-form :checkbox:checked").length == 0) {
+      $("#bt-check-all-cb").text("Check all checkboxes");
+      $("#selectFile-validate").prop("disabled", true);
+    } else {
+      $("#bt-check-all-cb").text("Uncheck all checkboxes");
+      $("#selectFile-validate").prop("disabled", false);
+    }
   });
 
   $("#selectFile").on("change", function () {
-    fileSetter("./documents/test_files/" + $("#selectFile").val() + ".txt");
+    let selection = $("#selectFile").val();
+
+    if(selection == "--Select a file" ) {
+      $("*[id*=cb-]").attr("disabled", true);
+    } else {
+      $("*[id*=cb-]").removeAttr("disabled");
+    }
+    
+    fileSetter("./documents/test_files/" + selection + ".txt");
     atomicHandler();
-    ctlHandler();
     flag = false;
   });
   $("*[id*=selectAP]").on("change", function () {
@@ -58,6 +76,8 @@ $(document).ready(function () {
       $('.node:not(".title"):not(".algorithms")').remove();
 
       if (selectedFile != "") {
+        ctlHandler();
+        
         let atom1 = $("#selectAP1").find(":selected").text();
         let atom2 = $("#selectAP2").find(":selected").text();
         let processed = process(
@@ -283,6 +303,8 @@ function customCtlHandler(initial_states, states) {
 
   $("#custom-ctl-output").empty(); // Remove all child
   $("#custom-ctl-output").append(
-    `<p class="node">From custom CTL: &nbsp &nbsp ${$("#custom-ctl").val()} = <span style="color:${color}">${bool}</span></p>`
+    `<p class="node">From custom CTL: &nbsp &nbsp ${$(
+      "#custom-ctl"
+    ).val()} = <span style="color:${color}">${bool}</span></p>`
   );
 }

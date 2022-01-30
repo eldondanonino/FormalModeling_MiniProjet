@@ -8,6 +8,7 @@
     </script>
 
     <link rel="stylesheet" href="../styles/style.css" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
@@ -24,7 +25,7 @@
         <div id="otherFiles"></div>
       </select>
 
-      <button id="selectFile-validate" type="button" autofocus>Launch</button>
+      <button id="selectFile-validate" type="button" autofocus disabled>Launch</button>
 
       <!--- End:File Selection -->
 
@@ -33,50 +34,53 @@
       </br>
       <button id="bt-check-all-cb" type="Button">Check all checkboxes</button>
       
-      <div>
-        <input type="checkbox" id="cb-states" name="states" value="states" />
-        <label for="states">States</label>
+      <div id="checkboxes">
+        <div>
+          <input type="checkbox" id="cb-states" name="states" value="states" />
+          <label for="states">States</label>
+        </div>
+        <div>
+          <input type="checkbox" id="cb-tuples" name="tuples" value="tuples" />
+          <label for="tuples">Tuples</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="cb-transitions"
+            name="transitions"
+            value="transitions"
+          />
+          <label for="transitions">Transitions</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="cb-initial-states"
+            name="initial-states"
+            value="initial-states"
+          />
+          <label for="initial-states">Initial States</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="cb-algorithms"
+            name="algorithms"
+            value="algorithms"
+          />
+          <label for="algorithms">Algorithms</label>
+        </div>
       </div>
-      <div>
-        <input type="checkbox" id="cb-tuples" name="tuples" value="tuples" />
-        <label for="tuples">Tuples</label>
-      </div>
-      <div>
-        <input
-          type="checkbox"
-          id="cb-transitions"
-          name="transitions"
-          value="transitions"
-        />
-        <label for="transitions">Transitions</label>
-      </div>
-      <div>
-        <input
-          type="checkbox"
-          id="cb-initial-states"
-          name="initial-states"
-          value="initial-states"
-        />
-        <label for="initial-states">Initial States</label>
-      </div>
-      <div>
-        <input
-          type="checkbox"
-          id="cb-algorithms"
-          name="algorithms"
-          value="algorithms"
-        />
-        <label for="algorithms">Algorithms</label>
-        <br />
+
         <select name="selectAP1" id="selectAP1" hidden></select>
         <select name="selectAP2" id="selectAP2" hidden></select>
-      </div>
-      <input
-        type="text"
-        id="custom-ctl"
-        placeholder="Try your own CTL!"
-        hidden
-      />
+      
+        <br />  <br />
+
+      <input type="text" id="custom-ctl" placeholder="Try your own CTL!" hidden/>
+
+      
+
       <button id="custom-ctl-btn" type="button" autofocus hidden>Go!</button>
     </form>
 
@@ -85,6 +89,18 @@
     <!-- CTL -->
 
     <div id="custom-ctl-output" class="title"></div>
+
+    <!-- ModalTutorial -->
+
+    <!-- <div id="hider"></div>
+    <div id="popup_box">
+      Message<br />
+      <a id="buttonClose">Close</a>
+    </div> 
+
+    <a id="showpopup">ClickMe</a> -->
+
+    <!-- End:ModalTutorial -->
 
     <div id="ctl" class="title"></div>
 

@@ -274,15 +274,21 @@ function ctlHandler() {
 function customCtlHandler(initial_states, states) {
   // let a = "A(&(!(U(p,q)),E(&(p,q))))"
   let initial_state_position = states.indexOf(initial_states[0]);
-  let bool = CTLParser($("#custom-ctl").val())[initial_state_position]; //maybe put .tostring()
-  let color;
+  try {
+    let bool = CTLParser($("#custom-ctl").val())[initial_state_position]; //maybe put .tostring()
+    let color;
 
-  bool ? (color = "green") : (color = "red");
+    bool ? (color = "green") : (color = "red");
 
-  // TODO: same plz <3
+    // TODO: same plz <3
 
-  $("#custom-ctl-output").empty(); // Remove all child
-  $("#custom-ctl-output").append(
-    `<p class="node">From custom CTL: &nbsp &nbsp ${$("#custom-ctl").val()} = <span style="color:${color}">${bool}</span></p>`
-  );
+    $("#custom-ctl-output").empty(); // Remove all child
+    $("#custom-ctl-output").append(
+      `<p class="node">From custom CTL: &nbsp &nbsp ${$(
+        "#custom-ctl"
+      ).val()} = <span style="color:${color}">${bool}</span></p>`
+    );
+  } catch (e) {
+    alert(e);
+  }
 }

@@ -1,6 +1,6 @@
 import { process } from "./process";
 import { display } from "./output";
-import { not, and,or } from "./algorithms";
+import { not, and, or } from "./algorithms";
 
 const filePath = "documents/test_files/";
 // const fileName = "file2";
@@ -55,28 +55,27 @@ export function CTLParser(input, initial) {
   let index;
   let result;
   let operator;
+  let flag = false;
   let elements = [];
   input.trim();
 
   console.log("input");
   console.log(input);
 
-  if (input.charAt(0).match(/!|&|\|/)) {
+  if (input.charAt(0).match(/!|&|\||A|E/)) {
     input.charAt(input.length - 1) == ")"
       ? (input = input.slice(0, -1))
-      : console.log("error");
-  } else {
-    console.log("input not logical " + input);
-    return false;
-    //no algorithm needed, end of recursion
+      : (flag = true);
   }
   input = input.split(/\((.+)/);
   operator = input[0];
   input.pop();
+  console.log("input : ");
+  console.log(input);
   //we should have either finished the recursive loop or [operator,unseparated values]
 
-  //if first char is algo, recursive
-  if (input[1].charAt(0).match(/!|&|\|/)) {
+  //double element logical operator
+  if (operator.match(/&|\||T/)) {
     console.log("first element is logical");
     let para_counter = 1;
     for (let i = 2; i < input[1].length; i++) {
@@ -90,20 +89,26 @@ export function CTLParser(input, initial) {
     elements = split_at_index(input[1], index);
     console.log("recursive call of first logical element");
     elements[0] = CTLParser(elements[0], initial);
-  } else {
+    if (elements[1].charAt(0).match(/&|\|/)) {
+      console.log("second element is logical");
+      //if the second element is not a simple atomic proposition we call recursively
+      elements[1] = CTLParser(elements[1], initial);
+    }
     elements = input[1].split(/,(.+)/);
     elements.pop();
-  }
-
-  if (elements[1].charAt(0).match(/!|&|\|/)) {
-    console.log("second element is logical");
-    //if the second element is not a simple atomic proposition we call recursively
-    elements[1] = CTLParser(elements[1], initial);
+  } else if (operator.match(/!|E|A/)) {
+    //single element logical operation, no need for a second one
+    elements[0] = input[1];
+    if ((operator == "A") | (operator == "E")) {
+      //do the sub operation check
+      console.log("algo casse couilles détecté");
+    }
   }
 
   console.log("operator : " + operator);
   console.log("elements : ");
   console.log(elements);
+  flag ? (operator = "error") : true;
 
   switch (operator) {
     case "!":
@@ -114,10 +119,24 @@ export function CTLParser(input, initial) {
       console.log("and is reached");
       result = and(elements[0], elements[1]);
       break;
-      case "|":
-        console.log("or is reached");
-        result = or(elements[0], elements[1]);
-        break;
+    case "|":
+      console.log("or is reached");
+      result = or(elements[0], elements[1]);
+      break;
+    // case "T":
+    //   console.log("then is reached");
+    //   result = T(elements[0], elements[1]);
+    //   break;
+    case "A":
+      console.log("A is reached");
+      result = A(elements[0]);
+      break;
+    case "E":
+      console.log("E is reached");
+      result = E(elements[0]);
+      break;
+    case "error":
+      throw "your CTL is not properly formatted";
     default:
       console.log("ko");
       break;

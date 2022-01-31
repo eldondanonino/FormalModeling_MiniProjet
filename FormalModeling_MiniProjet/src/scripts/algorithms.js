@@ -84,6 +84,11 @@ export function E(sub_func) {
       elements = sub_func.slice(2, -1);
       return EF(elements);
 
+    case "T":
+      elements = sub_func.slice(2, -1).split(/,(.+)/);
+      elements.pop();
+      return ET(elements[0], elements[1]);
+
     case "G":
       elements = sub_func.slice(2, -1).split(/,(.+)/);
       elements.pop();
@@ -111,6 +116,11 @@ export function A(sub_func) {
     case "F":
       elements = sub_func.slice(2, -1);
       return AF(elements);
+
+    case "T":
+      elements = sub_func.slice(2, -1).split(/,(.+)/);
+      elements.pop();
+      return AT(elements[0], elements[1]);
 
     case "G":
       elements = sub_func.slice(2, -1);
@@ -274,7 +284,6 @@ export function EF(sub_func) {
   return table_EF;
 }
 
-//ne retourne pas les bonnes valeurs
 export function AF(sub_func) {
   let table = [];
   let table_AF = [];
@@ -313,6 +322,22 @@ export function AF(sub_func) {
     }
   }
   return table_AF;
+}
+
+export function ET(sub_func1, sub_func2){
+  let table_ET = [];
+
+  table_ET = and(sub_func1, EX(sub_func2));
+
+  return table_ET;
+}
+
+export function AT(sub_func1, sub_func2){
+  let table_AT = [];
+
+  table_AT = and(sub_func1, AX(sub_func2));
+
+  return table_AT;
 }
 
 // EG = après n transitions quelconques, il existe une série de transitions vérifiant sub_func à chaque état

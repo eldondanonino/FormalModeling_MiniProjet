@@ -340,7 +340,6 @@ export function AT(sub_func1, sub_func2){
   return table_AT;
 }
 
-// EG = après n transitions quelconques, il existe une série de transitions vérifiant sub_func à chaque état
 export function EG(sub_func) {
   let table = marking_setter(sub_func);
   let table_EG = [];

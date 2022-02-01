@@ -12,16 +12,16 @@ In this project, we designed an application running a Computation Tree Logic (or
 - NOT     → !(x)
 - x AND y → &(x,y)
 - x OR y  → |(x,y)
--x THEN y → T(x,y)
 
 ### Glossary
 
 - For All    → A
 - Exists     → E
 - Next x     → E(X(x)) or A(X(x))
-- Globally x → E(G(x)) or A(G(x))
+- x Then y   → E(T(x,y)) or A(T(x,y))
 - Finally x  → E(F(x)) or A(F(x))
 - x Until y  → E(U(x,y)) or A(U(x,y))
+- Globally x → E(G(x)) or A(G(x)) // This is a work in progress and does not currently work
 
 ### Input format
 

@@ -414,6 +414,7 @@ export function marking_setter(sub_func) {
   return table;
 }
 
+//WIP
 export function state_explorer(origin, sub_func) {
   let atom_props = [];
   let validating_states = [];

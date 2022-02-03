@@ -7,6 +7,19 @@ In this project, we designed an application running a Computation Tree Logic (or
 
 ## Running the application
 
+```bash
+cd FormalModeling_MiniProjet
+```
+
+To install all the necessary dependencies, run this command:
+```bash
+npm install
+```
+
+```bash
+npm start
+```
+
 ### Logical Symbol interpretation for the input file
 
 - NOT      → !(x)

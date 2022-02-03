@@ -1,13 +1,3 @@
-a {
-  color: cyan;
-}
-
-a:hover {
-  text-decoration: underline;
-  color: lightskyblue;
-  cursor: pointer;
-}
-
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */

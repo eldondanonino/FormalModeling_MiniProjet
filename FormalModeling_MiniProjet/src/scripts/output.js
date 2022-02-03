@@ -131,7 +131,7 @@ function fillModalToturial(filePath) {
     console.error("No document found for CTL tutorial : \n" + err);
   }
 
-  textByLine.forEach(line => textToAppend += (line+"\r\n"));
+  textByLine.forEach((line) => (textToAppend += line + "\r\n"));
 
   $("#modal-body").append(textToAppend);
 }
@@ -333,13 +333,16 @@ function customCtlHandler(initial_states, states) {
 
     // TODO: same plz <3
 
-  $("#custom-ctl-output").empty(); // Remove all child
-  $("#custom-ctl-output").append(
-    `<p class="node">From custom CTL (initial state = ${
-      initial_states[0]
-    }): &nbsp &nbsp ${$(
-      "#custom-ctl"
-    ).val()} = <span style="color:${color}">${bool}</span></p>`
-  );
-  //TODO: make append dynamic with size of initial_states[]
+    $("#custom-ctl-output").empty(); // Remove all child
+    $("#custom-ctl-output").append(
+      `<p class="node">From custom CTL (initial state = ${
+        initial_states[0]
+      }): &nbsp &nbsp ${$(
+        "#custom-ctl"
+      ).val()} = <span style="color:${color}">${bool}</span></p>`
+    );
+    //TODO: make append dynamic with size of initial_states[]
+  } catch (e) {
+    alert(e);
+  }
 }

@@ -3,12 +3,20 @@
     background-color: white;
     color: black;
   }
+
+  .modal-content p span {
+    color: darkgreen;
+  }
 }
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
   .modal .modal-content{
     background-color: rgb(0,0,0);
     color: white;
+  }
+
+  .modal-content p span {
+    color: lightgreen;
   }
 }
 
@@ -31,6 +39,10 @@
   padding: 20px;
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.modal-content p span {
+  font-weight: 750;
 }
 
 .modal-header * {

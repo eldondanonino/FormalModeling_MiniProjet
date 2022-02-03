@@ -1,4 +1,17 @@
-Hello There
-line 2
+<h3>Logical Symbol interpretation for the input file</h3>
 
-Got the space?
+<ul>
+    <li>NOT      → !(x)</li>
+    <li>AND y    → &(x,y)</li>
+    <li>x OR y   → |(x,y)</li>
+    <li>x THEN y → T(x,y)</li>
+</ul>
+
+<h3>Glossary</h3>
+
+<li>For All    → A</li>
+<li>Exists     → E</li>
+<li>Next x     → E(X(x)) or A(X(x))</li>
+<li>Globally x → E(G(x)) or A(G(x))</li>
+<li>Finally x  → E(F(x)) or A(F(x))</li>
+<li>x Until y  → E(U(x,y)) or A(U(x,y))</li>

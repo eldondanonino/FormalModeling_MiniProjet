@@ -12,7 +12,7 @@ In this project, we designed an application running a Computation Tree Logic (or
 - NOT     → !(x)
 - x AND y → &(x,y)
 - x OR y  → |(x,y)
--x THEN y → T(x,y)
+- x THEN y → T(x,y)
 
 ### Glossary
 

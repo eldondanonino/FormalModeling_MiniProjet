@@ -131,9 +131,7 @@ function fillModalToturial(filePath) {
     console.error("No document found for CTL tutorial : \n" + err);
   }
 
-  textToAppend += "<p>";
-  textByLine.forEach(line => textToAppend += (line+"\r"));
-  textToAppend += "</p>";
+  textByLine.forEach(line => textToAppend += (line+"\r\n"));
 
   $("#modal-body").append(textToAppend);
 }

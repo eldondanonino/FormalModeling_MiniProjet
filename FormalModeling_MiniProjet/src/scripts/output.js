@@ -12,6 +12,9 @@ $(document).ready(function () {
   $("*[id*=cb-]").attr("disabled", true);
 
   $("#bt-check-all-cb").on("click", function () {
+    /// Fill the modal-tutorial with text
+    fillModalToturial("../../documents/CTL-tutorial.txt");
+
     /// Check if all checkboxes are in the same status of selection
     let bool;
 
@@ -107,6 +110,33 @@ $(document).ready(function () {
     }
   });
 });
+
+function fillModalToturial(filePath) {
+  /// Get content of a file and feed it to the modal
+  //  to avoid having too big of an HTML file
+
+  let fs = require("fs");
+  let text = "";
+  let textByLine;
+  let textToAppend = "";
+
+  try {
+    // text = fs.readFileSync(filePath);
+    text = fs.readFileSync("./documents/CTL-tutorial.txt");
+    textByLine = text.toString().split("\r\n");
+
+    console.log("text : \n" + text);
+    console.log("textByLine : \n" + textByLine);
+  } catch (err) {
+    console.error("No document found for CTL tutorial : \n" + err);
+  }
+
+  textToAppend += "<p>";
+  textByLine.forEach(line => textToAppend += (line+"\r"));
+  textToAppend += "</p>";
+
+  $("#modal-body").append(textToAppend);
+}
 
 function displayStates() {
   $("#states").removeAttr("hidden");

@@ -3,9 +3,9 @@
   <head>
     <title>Formal Modeling Project</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-      src = "./src/scripts/output.js";
-    </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script> src = "./src/scripts/output.js"</script>
+
 
     <link rel="stylesheet" href="../styles/style.css" />
 
@@ -79,8 +79,6 @@
 
       <input type="text" id="custom-ctl" placeholder="Try your own CTL!" hidden/>
 
-      
-
       <button id="custom-ctl-btn" type="button" autofocus hidden>Go!</button>
     </form>
 
@@ -88,19 +86,34 @@
 
     <!-- CTL -->
 
-    <div id="custom-ctl-output" class="title"></div>
-
     <!-- ModalTutorial -->
 
-    <!-- <div id="hider"></div>
-    <div id="popup_box">
-      Message<br />
-      <a id="buttonClose">Close</a>
-    </div> 
+    <button type="button" id="b-ctl-modal-tutorial" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ctl-modal-tutorial" hidden>CTL Turorial</button>
 
-    <a id="showpopup">ClickMe</a> -->
+    <div id="ctl-modal-tutorial" class="modal fade" role="dialog" hidden>
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">CTL Tutorial</h4>
+          </div>
+
+          <div class="modal-body">
+            <p>Some text in the modal.</p>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
 
     <!-- End:ModalTutorial -->
+
+    <div id="custom-ctl-output" class="title"></div>
 
     <div id="ctl" class="title"></div>
 

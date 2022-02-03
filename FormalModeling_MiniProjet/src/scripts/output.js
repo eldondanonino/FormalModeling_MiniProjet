@@ -17,11 +17,9 @@ $(document).ready(function () {
 
     $("#selectFile-form :checkbox:checked").length == 0
       ? /// If none checked, toggle all checkboxes to true
-        ($("#bt-check-all-cb").text("Uncheck all checkboxes"),
-        (bool = true))
+        ($("#bt-check-all-cb").text("Uncheck all checkboxes"), (bool = true))
       : /// If one checked, toggle all checkboxes to false
-        ($("#bt-check-all-cb").text("Check all checkboxes"),
-        (bool = false));
+        ($("#bt-check-all-cb").text("Check all checkboxes"), (bool = false));
     $("#selectFile-form :checkbox").prop("checked", bool);
     $("#selectFile-validate").prop("disabled", !bool);
 
@@ -45,12 +43,12 @@ $(document).ready(function () {
   $("#selectFile").on("change", function () {
     let selection = $("#selectFile").val();
 
-    if(selection == "--Select a file" ) {
+    if (selection == "--Select a file") {
       $("*[id*=cb-]").attr("disabled", true);
     } else {
       $("*[id*=cb-]").removeAttr("disabled");
     }
-    
+
     fileSetter("./documents/test_files/" + selection + ".txt");
     atomicHandler();
     flag = false;
@@ -77,7 +75,7 @@ $(document).ready(function () {
 
       if (selectedFile != "") {
         ctlHandler();
-        
+
         let atom1 = $("#selectAP1").find(":selected").text();
         let atom2 = $("#selectAP2").find(":selected").text();
         let processed = process(
@@ -191,9 +189,9 @@ function displayAlgorithms(base_algorithms) {
   });
 }
 
-function displayCTL(initial_state, states, ctl) {
+function displayCTL(initial_states, states, ctl) {
   let checkedCTL = CTLParser(ctl);
-  let initial_state_position = states.indexOf(initial_state[0]);
+  let initial_state_position = states.indexOf(initial_states[0]);
   let ctl_output = checkedCTL[initial_state_position];
   let color = "";
 
@@ -205,10 +203,11 @@ function displayCTL(initial_state, states, ctl) {
   $("#ctl").addClass("node");
 
   $("#ctl").append(
-    `<p class="node">From ${$(
-      "#selectFile"
-    ).val()}'s CTL: &nbsp &nbsp ${ctl} = <span style="color:${color}">${ctl_output}</span></p>`
+    `<p class="node">From ${$("#selectFile").val()}'s CTL (initial state = ${
+      initial_states[0]
+    }): &nbsp &nbsp ${ctl} = <span style="color:${color}">${ctl_output}</span></p>`
   );
+  //TODO: make append dynamic with size of initial_states[]
 }
 
 function hideUncheckedTitles() {
@@ -238,6 +237,8 @@ function hideAllTitles() {
   $("#initial-states").attr("hidden", true);
   $("#algorithms").attr("hidden", true);
   $("#ctl").attr("hidden", true);
+  $("#b-ctl-modal-tutorial").attr("hidden", true);
+  $("#ctl-modal-tutorial").attr("hidden", true);
   $("#custom-ctl-output").attr("hidden", true);
 }
 
@@ -286,9 +287,11 @@ function ctlHandler() {
   $("#custom-ctl").val("");
   $("#selectFile").find(":selected").text() == "--Select a file"
     ? ($("#custom-ctl-btn").attr("hidden", true),
-      $("#custom-ctl").attr("hidden", true))
+      $("#custom-ctl").attr("hidden", true),
+      $("#b-ctl-modal-tutorial").attr("hidden", true))
     : ($("#custom-ctl-btn").removeAttr("hidden"),
-      $("#custom-ctl").removeAttr("hidden"));
+      $("#custom-ctl").removeAttr("hidden"),
+      $("#b-ctl-modal-tutorial").removeAttr("hidden"));
 }
 
 function customCtlHandler(initial_states, states) {
@@ -303,8 +306,11 @@ function customCtlHandler(initial_states, states) {
 
   $("#custom-ctl-output").empty(); // Remove all child
   $("#custom-ctl-output").append(
-    `<p class="node">From custom CTL: &nbsp &nbsp ${$(
+    `<p class="node">From custom CTL (initial state = ${
+      initial_states[0]
+    }): &nbsp &nbsp ${$(
       "#custom-ctl"
     ).val()} = <span style="color:${color}">${bool}</span></p>`
   );
+  //TODO: make append dynamic with size of initial_states[]
 }

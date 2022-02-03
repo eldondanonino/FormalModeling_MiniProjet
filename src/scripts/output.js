@@ -220,22 +220,21 @@ function displayAlgorithms(base_algorithms) {
 function displayCTL(initial_states, states, ctl) {
   let checkedCTL = CTLParser(ctl);
   let initial_state_position = states.indexOf(initial_states[0]);
-  let ctl_output = checkedCTL[initial_state_position];
   let color = "";
-
-  ctl_output ? (color = "green") : (color = "red");
-
-  //TODO: case->multiple initial sates, use a forEach
+  let ctl_output;
 
   $("#ctl").removeAttr("hidden");
   $("#ctl").addClass("node");
+  for (let i in initial_states) {
+    let ctl_output = checkedCTL[i];
+    ctl_output ? (color = "green") : (color = "red");
 
-  $("#ctl").append(
-    `<p class="node">From ${$("#selectFile").val()}'s CTL (initial state = ${
-      initial_states[0]
-    }): &nbsp &nbsp ${ctl} = <span style="color:${color}">${ctl_output}</span></p>`
-  );
-  //TODO: make append dynamic with size of initial_states[]
+    $("#ctl").append(
+      `<p class="node">From ${$("#selectFile").val()}'s CTL (initial state = ${
+        initial_states[i]
+      }): &nbsp &nbsp ${ctl} = <span style="color:${color}">${ctl_output}</span></p>`
+    );
+  }
 }
 
 function hideUncheckedTitles() {
@@ -323,25 +322,24 @@ function ctlHandler() {
 }
 
 function customCtlHandler(initial_states, states) {
-  // let a = "A(&(!(U(p,q)),E(&(p,q))))"
   let initial_state_position = states.indexOf(initial_states[0]);
   try {
-    let bool = CTLParser($("#custom-ctl").val())[initial_state_position]; //maybe put .tostring()
-    let color;
-
-    bool ? (color = "green") : (color = "red");
-
-    // TODO: same plz <3
-
     $("#custom-ctl-output").empty(); // Remove all child
-    $("#custom-ctl-output").append(
-      `<p class="node">From custom CTL (initial state = ${
-        initial_states[0]
-      }): &nbsp &nbsp ${$(
-        "#custom-ctl"
-      ).val()} = <span style="color:${color}">${bool}</span></p>`
-    );
-    //TODO: make append dynamic with size of initial_states[]
+    for (let i in initial_states) {
+      let bool = CTLParser($("#custom-ctl").val().split(" ").join(""))[i];
+      let color;
+
+      bool ? (color = "green") : (color = "red");
+
+      $("#custom-ctl-output").append(
+        `<p class="node">From custom CTL (initial state = ${
+          initial_states[i]
+        }): &nbsp &nbsp ${$("#custom-ctl")
+          .val()
+          .split(" ")
+          .join("")} = <span style="color:${color}">${bool}</span></p>`
+      );
+    }
   } catch (e) {
     alert(e);
   }

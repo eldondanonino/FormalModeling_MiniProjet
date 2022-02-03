@@ -122,7 +122,7 @@ function fillModalToturial(filePath) {
 
   try {
     // text = fs.readFileSync(filePath);
-    text = fs.readFileSync("./documents/CTL-tutorial.txt");
+    text = fs.readFileSync("./documents/CTL-tutorial.html");
     textByLine = text.toString().split("\r\n");
 
     console.log("text : \n" + text);

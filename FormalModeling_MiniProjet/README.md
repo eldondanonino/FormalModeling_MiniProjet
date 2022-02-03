@@ -9,10 +9,10 @@ In this project, we designed an application running a Computation Tree Logic (or
 
 ### Logical Symbol interpretation for the input file
 
-- NOT     → !(x)
-- x AND y → &(x,y)
-- x OR y  → |(x,y)
--x THEN y → T(x,y)
+- NOT      → !(x)
+- x AND y  → &(x,y)
+- x OR y   → |(x,y)
+- x THEN y → T(x,y)
 
 ### Glossary
 

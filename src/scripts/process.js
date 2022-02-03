@@ -19,7 +19,11 @@ export function process(input) {
   });
   transitions.shift();
 
-  let initial_state = input[3].replace(/{|}/g, "");
+  let initial_state = input[3].replace(/{|}/g, "").split(",");
+  // initial_state.forEach(function a(value,index)
+  // {
+
+  // })
   Array.isArray(initial_state) ? true : (initial_state = [initial_state]);
 
   let ctl = input[4];

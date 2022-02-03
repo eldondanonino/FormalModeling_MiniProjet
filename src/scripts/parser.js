@@ -1,14 +1,8 @@
 import { process } from "./process";
 import { display } from "./output";
-import { not, and, or, AX, AU, AF, AG, EX, EU, EF, EG } from "./algorithms";
+import { not, and, or, AX, AU, AF, AG, AT, EX, EU, EF, EG, ET } from "./algorithms";
 
 const filePath = "documents/test_files/";
-// const fileName = "file2";
-
-function split_at_index(value, index) {
-  //"borrowed code for convenience, will be removed"
-  return [value.substring(0, index), value.substring(index + 1)];
-}
 
 // Display elements
 export function output(fileName) {
@@ -17,14 +11,11 @@ export function output(fileName) {
 }
 
 export function parse(fileName) {
-  // const finalPath = "".concat(filePath, fileName, ".txt");
 
   // Read document
   let fs = require("fs");
   let text = "";
 
-  // Sorry for the hard-coding :(
-  // fs is kinda wanky
   switch (fileName) {
     case "./documents/test_files/file1.txt":
       text = fs.readFileSync("./documents/test_files/file1.txt", "utf-8");
@@ -57,13 +48,12 @@ export function CTLParser(input) {
   let operator;
   let elements = [];
 
-  let reg_all = /!|&|\||A|E|T/;
-  let reg_double = /&|\||T|AU|EU/;
+  let reg_all = /!|&|\||A|E/;
+  let reg_double = /&|\||AU|EU|AT|ET/;
   let reg_simple = /!|A|E/;
-  let reg_AE = /X|G|F|U/;
+  let reg_AE = /X|G|F|U|T/;
 
   let flag = false;
-  input.trim();
 
   console.log("input");
   console.log(input);
@@ -74,7 +64,6 @@ export function CTLParser(input) {
       : (flag = true);
   } else {
     throw "Not a logical formula, please check you ctl";
-    //no algorithm needed, end of recursion
   }
   if (flag) throw "Your CTL does not have proper parenthesis placement";
 
@@ -87,7 +76,7 @@ export function CTLParser(input) {
     if (operator.match(/A|E/)) {
       //handle A and E
       if (!input[1].charAt(0).match(reg_AE)) {
-        throw "Please make sure that A and E are only applied on X G F or U";
+        throw "Please make sure that A and E are only applied on X G F U or T";
       } else {
         //change the operator to the composite form
         operator = operator + input[1].charAt(0);
@@ -108,8 +97,6 @@ export function CTLParser(input) {
       }
     } else if (input[1].charAt(0).match(reg_all)) {
       //element 1 is an operation
-
-      // console.log("splitting " + input[1] + " for operator " + operator);
       elements = first_spliter(input);
       console.log("elements");
       console.log(elements);
@@ -131,7 +118,7 @@ export function CTLParser(input) {
   } else {
     throw "Not a valid operation, please check your ctl";
   }
-  console.log(elements);
+
   switch (operator) {
     case "!":
       console.log("not is reached");
@@ -145,10 +132,10 @@ export function CTLParser(input) {
       console.log("or is reached");
       result = or(elements[0], elements[1]);
       break;
-    // case "T":
-    //   console.log("next is reached");
-    //   result = T(elements[0], elements[1]);
-    //   break;
+    case "AT":
+      console.log("next is reached");
+      result = AT(elements[0], elements[1]);
+      break;
     case "AX":
       console.log("AX is reached");
       result = AX(elements[0]);
@@ -181,6 +168,10 @@ export function CTLParser(input) {
       console.log("EG is reached");
       result = EG(elements[0]);
       break;
+    case "ET":
+      console.log("next is reached");
+      result = ET(elements[0], elements[1]);
+      break;
     default:
       throw "Something went wrong (failed switch)";
   }
@@ -202,4 +193,8 @@ function first_spliter(input) {
     }
   }
   return split_at_index(input[1], index);
+}
+
+function split_at_index(value, index) {
+  return [value.substring(0, index), value.substring(index + 1)];
 }

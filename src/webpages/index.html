@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Formal Modeling Project</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script> src = "./src/scripts/output.js"</script>
+
+    <link rel="stylesheet" href="../styles/style.css" />
+    <link rel="stylesheet" href="../styles/modal.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <h1>Formal Modeling Project</h1>
+
+    <!--- File Selection -->
+
+    <h3>Select a file:</h3>
+    <form id="selectFile-form">
+      <select name="selectFile" id="selectFile">
+        <option value="">--Select a file</option>
+        <option value="file1">file1</option>
+        <option value="file2">file2</option>
+        <div id="otherFiles"></div>
+      </select>
+
+      <button id="selectFile-validate" type="button" autofocus disabled>Launch</button>
+
+      <!--- End:File Selection -->
+
+      <!-- Display elements selection -->
+
+      </br>
+      <button id="bt-check-all-cb" type="Button">Check all checkboxes</button>
+      
+      <div id="checkboxes">
+        <div>
+          <input type="checkbox" id="cb-states" name="states" value="states" />
+          <label for="states">States</label>
+        </div>
+        <div>
+          <input type="checkbox" id="cb-tuples" name="tuples" value="tuples" />
+          <label for="tuples">Tuples</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="cb-transitions"
+            name="transitions"
+            value="transitions"
+          />
+          <label for="transitions">Transitions</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="cb-initial-states"
+            name="initial-states"
+            value="initial-states"
+          />
+          <label for="initial-states">Initial States</label>
+        </div>
+        <div>
+          <input
+            type="checkbox"
+            id="cb-algorithms"
+            name="algorithms"
+            value="algorithms"
+          />
+          <label for="algorithms">Algorithms</label>
+        </div>
+      </div>
+
+        <select name="selectAP1" id="selectAP1" hidden></select>
+        <select name="selectAP2" id="selectAP2" hidden></select>
+      
+        <br />  <br />
+
+      <input type="text" id="custom-ctl" placeholder="Try your own CTL!" hidden/>
+
+      <button id="custom-ctl-btn" type="button" autofocus hidden>Go!</button>
+    </form>
+
+    <!-- End:Display elements selection -->
+
+    <!-- CTL -->
+
+    <!-- ModalTutorial -->
+
+    <a id="b-ctl-modal-tutorial" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ctl-modal-tutorial" hidden>How to properly format your CTL?</a>
+
+    <div id="ctl-modal-tutorial" class="modal fade" role="dialog" hidden>
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h4 class="modal-title">CTL Tutorial</h4>
+          </div>
+
+          <div id="modal-body">
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- End:ModalTutorial -->
+
+    <div id="custom-ctl-output" class="title"></div>
+
+    <div id="ctl" class="title"></div>
+
+    <!-- End:CTL -->
+
+    <!-- Display Input Table -->
+
+    <div id="tables">
+      <table id="states" hidden>
+        <tr class="title">
+          <td>State</td>
+        </tr>
+        <tbody></tbody>
+      </table>
+      <table id="tuples" hidden>
+        <tr class="title">
+          <td>Tuples</td>
+          <td colspan="100%">Atomic propositions</td>
+        </tr>
+        <tbody></tbody>
+      </table>
+      <table id="transitions" hidden>
+        <tr class="title">
+          <td>Start state</td>
+          <td colspan="100%">End state(s)</td>
+        </tr>
+        <tbody></tbody>
+      </table>
+      <table id="initial-states" hidden>
+        <tr class="title">
+          <td>Initial State</td>
+        </tr>
+        <tbody></tbody>
+      </table>
+      <br />
+      <table id="algorithms" hidden>
+        <tr class="title">
+          <td>States</td>
+          <td>Marking</td>
+          <td>Not</td>
+          <td>And</td>
+          <td>EX</td>
+          <td>EU</td>
+          <td>AU</td>
+        </tr>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- End:Display Input Table -->
+
+    <!--- Application -->
+
+    <div id="app"></div>
+    <script src="../scripts/main.js"></script>
+
+    <!--- End:Application -->
+  </body>
+</html>

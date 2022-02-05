@@ -1,22 +1,22 @@
 import { parse } from "./parser";
 import { process } from "./process";
 
+// These global variables will be used all the time in this file.
+// This makes it so that we only have to write half the name (tuples instead of data.tuples)
 let data = "";
 let tuples = [];
 let states;
 let transitions;
 
+// This function sets the global variables
 export function fileSetter(file) {
-  console.log("data pre set");
-  console.log(data);
   data = process(parse(file));
   tuples = data.tuples;
   states = data.states;
   transitions = data.transitions;
-  console.log("data post set");
-  console.log(data);
 }
 
+// The marking of an atomic proposition, as an array
 export function marking(atomicProp) {
   let table = [];
   tuples.forEach(function iter(index) {
@@ -26,6 +26,7 @@ export function marking(atomicProp) {
   return table;
 }
 
+// NOT sub_func
 export function not(sub_func) {
   let table = marking_setter(sub_func);
   let table_not = [];
@@ -37,12 +38,14 @@ export function not(sub_func) {
   return table_not;
 }
 
+// sub_func1 AND sub_func2
 export function and(sub_func1, sub_func2) {
   let table1 = marking_setter(sub_func1);
   let table2 = marking_setter(sub_func2);
   let table_and = [];
 
   for (let i = 0; i < table1.length; i++) {
+    // If table1[i] === true && table2[i] === true, then table_and.push(true). Else, table_and.push(false)
     table1[i] === true && table2[i] === true
       ? table_and.push(true)
       : table_and.push(false);
@@ -51,6 +54,7 @@ export function and(sub_func1, sub_func2) {
   return table_and;
 }
 
+// sub_func1 OR sub_func2
 export function or(sub_func1, sub_func2) {
   let table1 = marking_setter(sub_func1);
   let table2 = marking_setter(sub_func2);
@@ -65,6 +69,8 @@ export function or(sub_func1, sub_func2) {
   return table_or;
 }
 
+// This is a 'dispacher' function used by the parser. 
+// It simply calls the correct function, according to what is in sub_func.
 export function E(sub_func) {
   //E(G(x))
   let elements;
@@ -99,6 +105,8 @@ export function E(sub_func) {
   }
 }
 
+// This is a 'dispacher' function used by the parser. 
+// It simply calls the correct function, according to what is in sub_func.
 export function A(sub_func) {
   //A(G(x))
   let elements;
@@ -131,6 +139,7 @@ export function A(sub_func) {
   }
 }
 
+// EX(sub_func), as shown in the pdf
 export function EX(sub_func) {
   let table = marking_setter(sub_func);
   let table_EX = [];
@@ -154,18 +163,25 @@ export function EX(sub_func) {
   return table_EX;
 }
 
+// AX(sub_func), not shown in the pdf
 export function AX(sub_func) {
   let table = marking_setter(sub_func);
   let table_AX = [];
   let state_prime, pos_state_prime;
 
+  // The main difference with EX is here : we initiate the return table as true for every state:
+  // Instead of checking if a state verifies sub_func, we check if it doesn't.
   for (let i = 0; i < states.length; i++) {
     table_AX[i] = true;
 
     for (let pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
+      // If the origin of the transition is the current state being checked: i.
       if (transitions[pos_trans][0] === states[i]) {
+        // We save q' and its position in the states global variable (line 8).
         state_prime = transitions[pos_trans][1];
+        // state_pos (line 380) simply returns the position of a given state in the states global variable.
         pos_state_prime = state_pos(state_prime);
+        // if q' doesn't verify sub_func, we set the value for the state i in the return table to false.
         if (table[pos_state_prime] === false) {
           table_AX[i] = false;
         }
@@ -175,11 +191,13 @@ export function AX(sub_func) {
   return table_AX;
 }
 
+// E(sub_func1 UNTIL sub_func2), as shown in the pdf
 export function EU(sub_func1, sub_func2) {
   let table1 = marking_setter(sub_func1);
-  let table2 = marking_setter(sub_func2);
   let table_EU = [];
   let table_seen = [];
+
+  // Setting L in a separate function (line 407).
   let L = L_setter(sub_func2);
   let pos_origin = 0;
   let origin,
@@ -212,6 +230,7 @@ export function EU(sub_func1, sub_func2) {
   return table_EU;
 }
 
+// A(sub_func1 UNTIL sub_func2), as shown in the pdf
 export function AU(sub_func1, sub_func2) {
   let table1 = marking_setter(sub_func1);
   let table2 = marking_setter(sub_func2);
@@ -227,6 +246,7 @@ export function AU(sub_func1, sub_func2) {
     ? (table2 = marking(sub_func2))
     : (table2 = sub_func2);
 
+  // count_outgoing_trans (line 394) is a custom function that returns the array of the number of outgoing transitions for every state.
   nb = count_outgoing_trans();
 
   for (let i = 0; i < states.length; i++) {
@@ -255,6 +275,7 @@ export function AU(sub_func1, sub_func2) {
   return table_AU;
 }
 
+// EF(sub_func), not shown in the pdf
 export function EF(sub_func) {
   let table_EF = [];
   let table_seen = [];
@@ -271,11 +292,16 @@ export function EF(sub_func) {
     table_EF[last] = true;
 
     for (let pos_trans = 0; pos_trans < transitions.length; pos_trans++) {
+      // If the receiving state of the transition is the one we're looking for.
       if (transitions[pos_trans][1] === states[last]) {
+        // We save the origin state of the transition and it's position in the states global variable.
         origin = transitions[pos_trans][0];
         pos_origin = state_pos(origin);
+        // If it has never been seen.
         if (table_seen[pos_origin] === false) {
+          // It is now seen.
           table_seen[pos_origin] = true;
+          // And added to L.
           L.push(pos_origin);
         }
       }
@@ -284,11 +310,14 @@ export function EF(sub_func) {
   return table_EF;
 }
 
+// AF(sub_func), not shown in the pdf
+// Similar to EF, it has another condition for adding a state to L : their number of outgoing transitions.
+// They can only be added to L if all their transitions verify sub_func.
 export function AF(sub_func) {
   let table = [];
   let table_AF = [];
   let nb = [];
-  let L = [];
+  let L = L_setter(sub_func);
   let pos_origin, origin, last;
 
   typeof sub_func == "string"
@@ -299,11 +328,6 @@ export function AF(sub_func) {
 
   for (let i = 0; i < states.length; i++) {
     table_AF[i] = false;
-
-    //checks for any state that verifies sub_func and saves it in L
-    if (table[i] === true) {
-      L.push(i);
-    }
   }
 
   while (L.length != 0) {
@@ -324,15 +348,16 @@ export function AF(sub_func) {
   return table_AF;
 }
 
-export function ET(sub_func1, sub_func2){
+// E(sub_func1 THEN sub_func2), not shown in the pdf
+export function ET(sub_func1, sub_func2) {
   let table_ET = [];
 
   table_ET = and(sub_func1, EX(sub_func2));
 
   return table_ET;
 }
-
-export function AT(sub_func1, sub_func2){
+// A(sub_func1 THEN sub_func2), not shown in the pdf
+export function AT(sub_func1, sub_func2) {
   let table_AT = [];
 
   table_AT = and(sub_func1, AX(sub_func2));
@@ -340,6 +365,7 @@ export function AT(sub_func1, sub_func2){
   return table_AT;
 }
 
+// Work In Progress
 export function EG(sub_func) {
   let table = marking_setter(sub_func);
   let table_EG = [];
@@ -362,7 +388,7 @@ export function EG(sub_func) {
   return table_EG;
 }
 
-//returns the position of a state in the states array
+// Returns the position of a state in the states array
 export function state_pos(name) {
   let state_position;
   for (let x = 0; x < states.length; x++) {
@@ -374,13 +400,14 @@ export function state_pos(name) {
   return state_position;
 }
 
+// Returns an array with the number of outgoing transitions for every state
 export function count_outgoing_trans() {
   let nb = [];
 
   for (let i = 0; i < states.length; i++) {
     nb[i] = 0;
 
-    //counts the number of outgoing transitions for every state
+    // Counts the number of outgoing transitions for every state
     for (let x = 0; x < transitions.length; x++) {
       if (transitions[x][0] === states[i]) {
         nb[i] += 1;
@@ -391,12 +418,11 @@ export function count_outgoing_trans() {
   return nb;
 }
 
-//checks for any state that verifies sub_func and saves it in the array L
+// Checks for any state that verifies sub_func and saves it in the array L
 export function L_setter(sub_func) {
   let L = [];
+  let table = marking(sub_func);
   for (let i = 0; i < states.length; i++) {
-    let table = marking(sub_func);
-
     if (table[i] === true) {
       L.push(i);
     }
@@ -404,6 +430,8 @@ export function L_setter(sub_func) {
   return L;
 }
 
+// This is a personalized marking function that checks if the input is a string and returns the marking of it,
+// or simply returns the array (if it is an array)
 export function marking_setter(sub_func) {
   let table = [];
 
@@ -414,7 +442,8 @@ export function marking_setter(sub_func) {
   return table;
 }
 
-//WIP
+// Work In Progress
+// This function is supposed to detect a loop verifying sub_func at every state for EG
 export function state_explorer(origin, sub_func) {
   let atom_props = [];
   let validating_states = [];
@@ -435,17 +464,13 @@ export function state_explorer(origin, sub_func) {
           }
         }
       }
-      console.log("validating_states:");
-      console.log(validating_states);
-      console.log("receiving_state");
-      console.log(receiving_state);
-      console.log("calling recursive");
       validating_states.concat(state_explorer(receiving_state, sub_func));
     }
   }
   return validating_states;
 }
 
+// This function returns the atominc proposition(s) of a given state, in an array
 export function find_atom_props(state) {
   let res_table = [];
   for (let i = 0; i < tuples.length; i++) {
@@ -462,13 +487,13 @@ export function find_atom_props(state) {
   }
 }
 
+// This function checks if the state is in the table_seen table.
+// It's not usefull to have it separate, it simply makes some functions simpler to read.
 export function checker_seen(table_seen, receiving_state) {
   for (let x = 0; x < table_seen.length; x++) {
     if (table_seen[x] === receiving_state) {
-      console.log("true");
       return true;
     }
   }
-  console.log("false");
   return false;
 }

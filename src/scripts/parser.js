@@ -1,6 +1,20 @@
 import { process } from "./process";
 import { display } from "./output";
-import { not, and, or, AX, AU, AF, AG, AT, EX, EU, EF, EG, ET } from "./algorithms";
+import {
+  not,
+  and,
+  or,
+  AX,
+  AU,
+  AF,
+  AG,
+  AT,
+  EX,
+  EU,
+  EF,
+  EG,
+  ET,
+} from "./algorithms";
 
 const filePath = "documents/test_files/";
 
@@ -11,7 +25,6 @@ export function output(fileName) {
 }
 
 export function parse(fileName) {
-
   // Read document
   let fs = require("fs");
   let text = "";
@@ -43,7 +56,6 @@ export function parse(fileName) {
 }
 
 export function CTLParser(input) {
-  let index;
   let result;
   let operator;
   let elements = [];
@@ -81,7 +93,12 @@ export function CTLParser(input) {
         //change the operator to the composite form
         operator = operator + input[1].charAt(0);
         input[1] = input[1].slice(2, -1);
-        if ((operator == "AU") | (operator == "EU")) {
+        if (
+          (operator == "AU") |
+          (operator == "EU") |
+          (operator == "AT") |
+          (operator == "ET")
+        ) {
           if (input[1].charAt(0).match(reg_all)) {
             elements = first_spliter(input);
             console.log(elements);
@@ -177,7 +194,7 @@ export function CTLParser(input) {
   }
   Array.isArray(result) ? (result = result) : console.log("not an array");
   console.log("result: " + result);
-  return result; //return the tableoftruth
+  return result; //return the table of truth
 }
 
 //splits the left hand element of a two elements operation

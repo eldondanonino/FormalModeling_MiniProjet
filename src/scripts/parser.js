@@ -1,28 +1,6 @@
-import { process } from "./process";
+import * as algo from "./algorithms";
 import { display } from "./output";
-import {
-  not,
-  and,
-  or,
-  AX,
-  AU,
-  AF,
-  AG,
-  AT,
-  EX,
-  EU,
-  EF,
-  EG,
-  ET,
-} from "./algorithms";
 
-const filePath = "documents/test_files/";
-
-// Display elements
-export function output(fileName) {
-  let data = process(parse(fileName));
-  display(data);
-}
 
 export function parse(fileName) {
   // Read document
@@ -46,6 +24,7 @@ export function parse(fileName) {
 
   // Put content in table
   let textByLine = text.split("\r\n");
+
   textByLine.forEach(function callback(value, index, object) {
     if (value.match(/^S:|^L:|^T:|^I:|^CTL/)) {
       object.splice(index, 1); //removes indicators
@@ -60,15 +39,14 @@ export function CTLParser(input) {
   let operator;
   let elements = [];
 
+  //regular expressions matching the different operators
   let reg_all = /!|&|\||A|E/;
   let reg_double = /&|\||AU|EU|AT|ET/;
   let reg_simple = /!|A|E/;
   let reg_AE = /X|G|F|U|T/;
 
+  //error flag to throw errors
   let flag = false;
-
-  console.log("input");
-  console.log(input);
 
   if (input.charAt(0).match(reg_all)) {
     input.charAt(input.length - 1) == ")"
@@ -82,15 +60,17 @@ export function CTLParser(input) {
   input = input.split(/\((.+)/);
   operator = input[0];
   input.pop();
+  //input will be of format [operator,element1,element2 (if exists)] after processing
+  //at this point it is only [operator,elements]
 
   //handle an operation
   if (operator.match(reg_all)) {
+    //check if the operator needs a specific following one
     if (operator.match(/A|E/)) {
-      //handle A and E
       if (!input[1].charAt(0).match(reg_AE)) {
         throw "Please make sure that A and E are only applied on X G F U or T";
       } else {
-        //change the operator to the composite form
+        //change the operator to its composite form
         operator = operator + input[1].charAt(0);
         input[1] = input[1].slice(2, -1);
         if (
@@ -99,20 +79,28 @@ export function CTLParser(input) {
           (operator == "AT") |
           (operator == "ET")
         ) {
+          //if the first element requires itself two elements, a left hand split must be done via first_splitter
+          //it will separate element 1 and element 2 disregarding complexity
           if (input[1].charAt(0).match(reg_all)) {
             elements = first_spliter(input);
             console.log(elements);
             elements[0] = CTLParser(elements[0]);
           } else {
+            //otherwise, the left hand element can easily be split by ,
             elements = input[1].split(/,(.+)/);
           }
         } else if (input[1].charAt(0).match(reg_all)) {
+          //if the first element has an operator, it needs further processing
+          //we call recursively the ctl parser on the subfunction
           elements[0] = CTLParser(input[1]);
         } else {
+          //otherwise it will become element 1
           elements[0] = input[1];
         }
       }
-    } else if (input[1].charAt(0).match(reg_all)) {
+    }
+    //if the operator is not a composit function (A or E)
+    else if (input[1].charAt(0).match(reg_all)) {
       //element 1 is an operation
       elements = first_spliter(input);
       console.log("elements");
@@ -133,74 +121,78 @@ export function CTLParser(input) {
       }
     }
   } else {
+    //handles incorrect CTL structures
     throw "Not a valid operation, please check your ctl";
   }
 
+  //control table for calling the correct algorithm
   switch (operator) {
     case "!":
       console.log("not is reached");
-      result = not(elements[0]);
+      result = algo.not(elements[0]);
       break;
     case "&":
       console.log("and is reached");
-      result = and(elements[0], elements[1]);
+      result = algo.and(elements[0], elements[1]);
       break;
     case "|":
       console.log("or is reached");
-      result = or(elements[0], elements[1]);
+      result = algo.or(elements[0], elements[1]);
       break;
     case "AT":
       console.log("next is reached");
-      result = AT(elements[0], elements[1]);
+      result = algo.AT(elements[0], elements[1]);
       break;
     case "AX":
       console.log("AX is reached");
-      result = AX(elements[0]);
+      result = algo.AX(elements[0]);
       break;
     case "AU":
       console.log("AU is reached");
-      result = AU(elements[0], elements[1]);
+      result = algo.AU(elements[0], elements[1]);
       break;
     case "AF":
       console.log("AF is reached");
-      result = AF(elements[0]);
+      result = algo.AF(elements[0]);
       break;
     case "AG":
       console.log("AG is reached");
-      result = AG(elements[0]);
+      result = algo.AG(elements[0]);
       break;
     case "EX":
       console.log("EX is reached");
-      result = EX(elements[0]);
+      result = algo.EX(elements[0]);
       break;
     case "EU":
       console.log("EU is reached");
-      result = EU(elements[0], elements[1]);
+      result = algo.EU(elements[0], elements[1]);
       break;
     case "EF":
       console.log("EF is reached");
-      result = EF(elements[0]);
+      result = algo.EF(elements[0]);
       break;
     case "EG":
       console.log("EG is reached");
-      result = EG(elements[0]);
+      result = algo.EG(elements[0]);
       break;
     case "ET":
       console.log("next is reached");
-      result = ET(elements[0], elements[1]);
+      result = algo.ET(elements[0], elements[1]);
       break;
     default:
+      //this should never be thrown
       throw "Something went wrong (failed switch)";
   }
-  Array.isArray(result) ? (result = result) : console.log("not an array");
-  console.log("result: " + result);
+
   return result; //return the table of truth
 }
 
 //splits the left hand element of a two elements operation
+//input of format [operator,elements]
 function first_spliter(input) {
-  let para_counter = 1;
+  let para_counter = 1; //counter of open parenthesis
   let index;
+  //we start after the first operator and open parenthesis (so charAt(2))
   for (let i = 2; i < input[1].length; i++) {
     if (input[1].charAt(i) == "(") para_counter++;
     if (input[1].charAt(i) == ")") para_counter--;
@@ -212,6 +204,7 @@ function first_spliter(input) {
   return split_at_index(input[1], index);
 }
 
+//handy function returning a string split in 2 at a specific index
 function split_at_index(value, index) {
   return [value.substring(0, index), value.substring(index + 1)];
 }

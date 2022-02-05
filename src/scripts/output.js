@@ -10,11 +10,11 @@ let flag = false; // On file selection change: set to false
 /// Listen for user input
 $(document).ready(function () {
   $("*[id*=cb-]").attr("disabled", true);
+  /// Fill the modal-tutorial with text
+  fillModalToturial();
 
+  /// Listen for clicks on "check all"
   $("#bt-check-all-cb").on("click", function () {
-    /// Fill the modal-tutorial with text
-    fillModalToturial("../../documents/CTL-tutorial.txt");
-
     /// Check if all checkboxes are in the same status of selection
     let bool;
 
@@ -43,6 +43,7 @@ $(document).ready(function () {
     }
   });
 
+  /// Listen for changes on the file dropdown
   $("#selectFile").on("change", function () {
     let selection = $("#selectFile").val();
 
@@ -56,12 +57,18 @@ $(document).ready(function () {
     atomicHandler();
     flag = false;
   });
+
+  /// Listen for changes on atomic proposition dropdown
   $("*[id*=selectAP]").on("change", function () {
     updateAlgorithms();
   });
+
+  /// Listen for changes on the algorithm checkbox
   $("#cb-algorithms").on("change", function () {
     atomicHandler();
   });
+
+  /// Listen for clicks on the custom ctl button
   $("#custom-ctl-btn").on("click", function () {
     customCtlHandler(initial, states);
   });
@@ -111,7 +118,7 @@ $(document).ready(function () {
   });
 });
 
-function fillModalToturial(filePath) {
+function fillModalToturial() {
   /// Get content of a file and feed it to the modal
   //  to avoid having too big of an HTML file
 
@@ -124,9 +131,6 @@ function fillModalToturial(filePath) {
     // text = fs.readFileSync(filePath);
     text = fs.readFileSync("./documents/CTL-tutorial.html");
     textByLine = text.toString().split("\r\n");
-
-    console.log("text : \n" + text);
-    console.log("textByLine : \n" + textByLine);
   } catch (err) {
     console.error("No document found for CTL tutorial : \n" + err);
   }
@@ -269,6 +273,14 @@ function hideAllTitles() {
   $("#custom-ctl-output").attr("hidden", true);
 }
 
+function updateAlgorithms() {
+  $('.algorithms:not(".title")').remove();
+  let atom1 = $("#selectAP1").find(":selected").text();
+  let atom2 = $("#selectAP2").find(":selected").text();
+  base_algorithms = BaseAlgorithms(atom1, atom2);
+  displayAlgorithms(base_algorithms);
+}
+
 function atomicHandler() {
   $("#selectAP1").empty();
   $("#selectAP2").empty();
@@ -302,14 +314,7 @@ function atomicHandler() {
   }
 }
 
-function updateAlgorithms() {
-  $('.algorithms:not(".title")').remove();
-  let atom1 = $("#selectAP1").find(":selected").text();
-  let atom2 = $("#selectAP2").find(":selected").text();
-  base_algorithms = BaseAlgorithms(atom1, atom2);
-  displayAlgorithms(base_algorithms);
-}
-
+//Manages the custom ctl display by hiding and showing it
 function ctlHandler() {
   $("#custom-ctl").val("");
   $("#selectFile").find(":selected").text() == "--Select a file"
@@ -321,12 +326,13 @@ function ctlHandler() {
       $("#b-ctl-modal-tutorial").removeAttr("hidden"));
 }
 
+//Manages the custom ctl logic
 function customCtlHandler(initial_states, states) {
-  let initial_state_position = states.indexOf(initial_states[0]);
   try {
     $("#custom-ctl-output").empty(); // Remove all child
+    //itterate through initial states
     for (let i in initial_states) {
-      let bool = CTLParser($("#custom-ctl").val().split(" ").join(""))[i];
+      let bool = CTLParser($("#custom-ctl").val().split(" ").join(""))[i]; //purges whitespaces and returns the state truth
       let color;
 
       bool ? (color = "green") : (color = "red");
@@ -341,6 +347,6 @@ function customCtlHandler(initial_states, states) {
       );
     }
   } catch (e) {
-    alert(e);
+    alert(e); //shows the user the reason the operation failes  via errors thrown in the parser
   }
 }

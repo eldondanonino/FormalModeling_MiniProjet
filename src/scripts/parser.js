@@ -7,6 +7,8 @@ export function parse(fileName) {
   let fs = require("fs");
   let text = "";
 
+  //As discussed with you, we encountered a very peculiar bug that forbid the fileName variable to be properly used in a readfile
+  //This forced a hardcoded solution to allow further development.
   switch (fileName) {
     case "./documents/test_files/file1.txt":
       text = fs.readFileSync("./documents/test_files/file1.txt", "utf-8");
@@ -26,8 +28,8 @@ export function parse(fileName) {
   let textByLine = text.split("\r\n");
 
   textByLine.forEach(function callback(value, index, object) {
-    if (value.match(/^S:|^L:|^T:|^I:|^CTL/)) {
-      object.splice(index, 1); //removes indicators
+    if (value.match(/^S:|^L:|^T:|^I:|^CTL/)) { //removes indicators
+      object.splice(index, 1);
     }
   });
 

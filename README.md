@@ -1,7 +1,7 @@
 # FormalModeling_MiniProjet
 
-M2 Formal Modeling project by Remy CHERKHAOUI, Quentin FELTEN and Daniil ROSSO,
-students at Efrei Paris
+__M2 Formal Modeling project by Remy CHERKHAOUI, Quentin FELTEN and Daniil ROSSO,
+students at Efrei Paris__
 
 In this project, we designed an application running a Computation Tree Logic (or CTL for short) algorithm to check if a given Kripke structure satisfies a given CTL formula. 
 
@@ -21,8 +21,9 @@ Start the application (default location is localhost:8080)
 ```bash
 npm start
 ```
+* Due to an unexplored bug, only the present files can be used by the program. (See _parser.js l.10_ or the corresponding part of the report for more information).
 
-You can add your own Kripke structures and CTL formulae by replacing file1.txt and file2.txt in **\documents\test_files\\**
+You can add your own Kripke structures and CTL formulae by **replacing file1.txt and file2.txt** in **\documents\test_files\\** and following the specified structure.
 
 See the example at the end of the README for the correct structure.
 

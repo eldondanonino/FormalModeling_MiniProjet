@@ -1,4 +1,4 @@
-# FormalModeling_MiniProjet
+# Formal Modeling Mini Project
 
 __M2 Formal Modeling project by Remy CHERKHAOUI, Quentin FELTEN and Daniil ROSSO,
 students at Efrei Paris__

@@ -80,3 +80,6 @@ Initial state **I**:
 CTL:
 
 `!(&(p,q))`
+
+
+Forked from Quentin FELTEN's github
